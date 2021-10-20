@@ -2,7 +2,9 @@
 
 Game::Game():
 	gameWindow(nullptr),
-	gameIsRunning(true)
+	gameIsRunning(true),
+	gameTickCount(0),
+	windowCol{0, 128, 255, 255}
 	{}
 
 bool Game::Initialise() {
@@ -32,6 +34,7 @@ void Game::GameLoop() {
 	while (gameIsRunning) {
 		ProcessInput();
 		GenerateFrame();
+		Update();
 	}
 }
 
@@ -50,11 +53,26 @@ void Game::ProcessInput() {
 }
 
 void Game::GenerateFrame() {
-	SDL_SetRenderDrawColor(gameRenderer, 235, 100, 0, 255);
+	SDL_SetRenderDrawColor(gameRenderer, (int)windowCol[0], (int)windowCol[1], (int)windowCol[2], (int)windowCol[3]);
 
 	SDL_RenderClear(gameRenderer);
 
 	SDL_RenderPresent(gameRenderer);
+}
+
+void Game::Update() {
+	while (!SDL_TICKS_PASSED(SDL_GetTicks(), gameTickCount + 16));
+
+	float stepTime = (SDL_GetTicks() - gameTickCount) / 1000.0f;
+
+	if (stepTime > 0.05f) {stepTime = 0.05f;}
+
+	gameTickCount = SDL_GetTicks();
+
+	for (auto &col : windowCol) {
+		col += stepTime * 50;
+		if (col > 255.0) {col -= 255;}
+	}
 }
 
 void Game::Shutdown() {
