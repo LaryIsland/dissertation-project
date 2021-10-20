@@ -6,4 +6,7 @@ public:
 	Game();
 
 	bool Initialise();
+
+private:
+	SDL_Window* gameWindow;
 };
