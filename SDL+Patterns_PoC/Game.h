@@ -13,8 +13,10 @@ public:
 
 private:
 	SDL_Window* gameWindow;
+	SDL_Renderer* gameRenderer;
 
 	bool gameIsRunning;
 
 	void ProcessInput();
+	void GenerateFrame();
 };
