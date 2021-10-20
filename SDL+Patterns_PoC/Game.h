@@ -7,6 +7,8 @@ public:
 
 	bool Initialise();
 
+	void Shutdown();
+
 private:
 	SDL_Window* gameWindow;
 };

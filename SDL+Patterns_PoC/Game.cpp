@@ -17,3 +17,8 @@ bool Game::Initialise() {
 
 	return true;
 }
+
+void Game::Shutdown() {
+	SDL_DestroyWindow(gameWindow);
+	SDL_Quit();
+}
