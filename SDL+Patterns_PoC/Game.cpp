@@ -1,6 +1,9 @@
 #include <Game.h>
 
-Game::Game():gameWindow(nullptr) {}
+Game::Game():
+	gameWindow(nullptr),
+	gameIsRunning(true)
+	{}
 
 bool Game::Initialise() {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -16,6 +19,23 @@ bool Game::Initialise() {
 	}
 
 	return true;
+}
+
+void Game::GameLoop() {
+	while (gameIsRunning) {
+		ProcessInput();
+	}
+}
+
+void Game::ProcessInput() {
+	SDL_Event event;
+
+	while (SDL_PollEvent(&event)) {
+		if (event.type == SDL_QUIT) {
+			gameIsRunning = false;
+			break;
+		}
+	}
 }
 
 void Game::Shutdown() {
