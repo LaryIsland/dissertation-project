@@ -36,6 +36,9 @@ void Game::ProcessInput() {
 			break;
 		}
 	}
+
+	const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
+	if (keyboardState[SDL_SCANCODE_ESCAPE]) {gameIsRunning = false;}
 }
 
 void Game::Shutdown() {
