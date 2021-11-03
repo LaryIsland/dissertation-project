@@ -7,12 +7,19 @@ Game::Game():
 	windowCol{0, 128, 255, 255}
 	{}
 
+// Returns true if game initialises
+// correctly, false otherwise
 bool Game::Initialise() {
+
+	// Initialise SDL
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
 		return false;
 	}
 
+	// Create an SDL Window
+	// Args-
+	// Title, x-coord, y-coord, width, height, flags
 	gameWindow = SDL_CreateWindow("SDL Proof of Concept", 100, 100, 1280, 720, 0);
 
 	if (!gameWindow) {
@@ -20,6 +27,9 @@ bool Game::Initialise() {
 		return false;
 	}
 
+	// Create an SDL renderer
+	// Args-
+	// SDL_Window, driver index, flags
 	gameRenderer = SDL_CreateRenderer(gameWindow, -1, SDL_RENDERER_ACCELERATED);
 
 	if (!gameRenderer) {
@@ -38,10 +48,12 @@ void Game::GameLoop() {
 	}
 }
 
+// Checks for current user input 
 void Game::ProcessInput() {
 	SDL_Event event;
 
 	while (SDL_PollEvent(&event)) {
+		// If recieving an SDL_QUIT event, end GameLoop
 		if (event.type == SDL_QUIT) {
 			gameIsRunning = false;
 			break;
@@ -49,6 +61,7 @@ void Game::ProcessInput() {
 	}
 
 	const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
+	// If ESCAPE key is pressed, end GameLoop
 	if (keyboardState[SDL_SCANCODE_ESCAPE]) {gameIsRunning = false;}
 }
 
@@ -60,9 +73,13 @@ void Game::GenerateFrame() {
 	SDL_RenderPresent(gameRenderer);
 }
 
+// Updates the game logic
 void Game::Update() {
+
+	// Waits until enough ticks have passed
 	while (!SDL_TICKS_PASSED(SDL_GetTicks(), gameTickCount + 16));
 
+	// Gets the amount of real time passed since last tick
 	float stepTime = (SDL_GetTicks() - gameTickCount) / 1000.0f;
 
 	if (stepTime > 0.05f) {stepTime = 0.05f;}
