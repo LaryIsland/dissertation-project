@@ -5,6 +5,7 @@
 #include "MeshComponent.h"
 #include "MoveComponent.h"
 #include "CameraEntity.h"
+#include "PlayerEntity.h"
 
 Game::Game() :
 	gRenderer(nullptr),
@@ -100,6 +101,7 @@ void Game::GenerateOutput() {
 }
 
 void Game::LoadData() {
+	/*	Suzanne rotation demo
 	Entity* Suzanne = new Entity(this);
 	Suzanne->SetPosition(Vector3(200.0f, 75.0f, 0.0f));
 	Suzanne->SetScale(100.0f);
@@ -110,6 +112,18 @@ void Game::LoadData() {
 	MoveComponent* moveSuzanne = new MoveComponent(Suzanne);
 	meshSuzanne->SetMesh(gRenderer->GetMesh("Assets/Suzanne.mesh"));
 	moveSuzanne->SetAngularSpeed(Math::Pi / 8.0f);
+	*/
+
+	// Player 1 loading
+	PlayerEntity* Player1 = new PlayerEntity(this);
+	Player1->SetPosition(Vector3(200.0f, 75.0f, 0.0f));
+	Player1->SetScale(100.0f);
+	Quaternion q(Vector3::UnitX, Math::TwoPi);
+	q = Quaternion::Concatenate(q, Quaternion(Vector3::UnitZ, Math::Pi + Math::Pi / 4.0f));
+	Player1->SetRotation(q);
+	MeshComponent* meshPlayer1 = new MeshComponent(Player1);
+	MoveComponent* movePlayer1 = new MoveComponent(Player1);
+	meshPlayer1->SetMesh(gRenderer->GetMesh("Assets/Suzanne.mesh"));
 
 	Entity* floor = new Entity(this);
 	floor->SetPosition(Vector3(200.0f, 0.0f, -150.0f));
