@@ -6,6 +6,8 @@
 #include "MoveComponent.h"
 #include "CameraEntity.h"
 #include "PlayerEntity.h"
+#include "InputSystem.h"
+#include "SDL_scancode.h"
 
 Game::Game() :
 	gRenderer(nullptr),
@@ -27,6 +29,13 @@ bool Game::Initialize() {
 		return false;
 	}
 
+	gInputSystem = new InputSystem();
+	if (!gInputSystem->Initialize())
+	{
+		SDL_Log("InputSystem Error");
+		return false;
+	}
+
 	LoadData();
 
 	gTicksCount = SDL_GetTicks();
@@ -43,22 +52,16 @@ void Game::GameLoop() {
 }
 
 void Game::ProcessInput() {
-	SDL_Event event;
-	while (SDL_PollEvent(&event)) {
-		switch (event.type) {
-		case SDL_QUIT:
-			gIsRunning = false;
-			break;
-		}
-	}
 
-	const Uint8* state = SDL_GetKeyboardState(NULL);
-	if (state[SDL_SCANCODE_ESCAPE]) {
+	gInputSystem->Update();
+	const InputState& state = gInputSystem->GetState();
+
+	if (state.Keyboard.GetKeyState(SDL_SCANCODE_ESCAPE) == RisingEdge) {
 		gIsRunning = false;
 	}
 
-	for (auto actor : gEntities) {
-		actor->ProcessInput(state);
+	for (auto entity : gEntities) {
+		entity->ProcessInput(state);
 	}
 }
 
@@ -73,8 +76,8 @@ void Game::UpdateGame()
 	gTicksCount = SDL_GetTicks();
 
 	gUpdatingEntities = true;
-	for (auto actor : gEntities) {
-		actor->Update(deltaTime);
+	for (auto entity : gEntities) {
+		entity->Update(deltaTime);
 	}
 	gUpdatingEntities = false;
 
@@ -85,14 +88,14 @@ void Game::UpdateGame()
 	gPendingEntitys.clear();
 
 	std::vector<Entity*> deadEntitys;
-	for (auto actor : gEntities) {
-		if (actor->GetState() == Entity::Dead) {
-			deadEntitys.emplace_back(actor);
+	for (auto entity : gEntities) {
+		if (entity->GetState() == Entity::Dead) {
+			deadEntitys.emplace_back(entity);
 		}
 	}
 
-	for (auto actor : deadEntitys) {
-		delete actor;
+	for (auto entity : deadEntitys) {
+		delete entity;
 	}
 }
 
@@ -116,14 +119,19 @@ void Game::LoadData() {
 
 	// Player 1 loading
 	PlayerEntity* Player1 = new PlayerEntity(this);
-	Player1->SetPosition(Vector3(200.0f, 75.0f, 0.0f));
+	Player1->SetPosition(Vector3(200.0f, 0.0f, 0.0f));
 	Player1->SetScale(100.0f);
+	Player1->SetRightKey(SDL_SCANCODE_D);
+	Player1->SetLeftKey(SDL_SCANCODE_A);
+	Player1->SetUpKey(SDL_SCANCODE_W);
+	Player1->SetDownKey(SDL_SCANCODE_S);
 	Quaternion q(Vector3::UnitX, Math::TwoPi);
 	q = Quaternion::Concatenate(q, Quaternion(Vector3::UnitZ, Math::Pi + Math::Pi / 4.0f));
 	Player1->SetRotation(q);
 	MeshComponent* meshPlayer1 = new MeshComponent(Player1);
 	MoveComponent* movePlayer1 = new MoveComponent(Player1);
 	meshPlayer1->SetMesh(gRenderer->GetMesh("Assets/Suzanne.mesh"));
+	movePlayer1->SetAngularSpeed(Math::Pi / 8.0f);
 
 	Entity* floor = new Entity(this);
 	floor->SetPosition(Vector3(200.0f, 0.0f, -150.0f));
@@ -159,23 +167,23 @@ void Game::Shutdown() {
 	SDL_Quit();
 }
 
-void Game::AddEntity(Entity* actor) {
+void Game::AddEntity(Entity* entity) {
 	if (gUpdatingEntities) {
-		gPendingEntitys.emplace_back(actor);
+		gPendingEntitys.emplace_back(entity);
 	}
 	else {
-		gEntities.emplace_back(actor);
+		gEntities.emplace_back(entity);
 	}
 }
 
-void Game::RemoveEntity(Entity* actor) {
-	auto iter = std::find(gPendingEntitys.begin(), gPendingEntitys.end(), actor);
+void Game::RemoveEntity(Entity* entity) {
+	auto iter = std::find(gPendingEntitys.begin(), gPendingEntitys.end(), entity);
 	if (iter != gPendingEntitys.end()) {
 		std::iter_swap(iter, gPendingEntitys.end() - 1);
 		gPendingEntitys.pop_back();
 	}
 
-	iter = std::find(gEntities.begin(), gEntities.end(), actor);
+	iter = std::find(gEntities.begin(), gEntities.end(), entity);
 	if (iter != gEntities.end()) {
 		std::iter_swap(iter, gEntities.end() - 1);
 		gEntities.pop_back();

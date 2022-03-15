@@ -14,8 +14,8 @@ public:
 
 	class Renderer* GetRenderer() { return gRenderer; }
 
-	void AddEntity(class Entity* actor);
-	void RemoveEntity(class Entity* actor);
+	void AddEntity(class Entity* entity);
+	void RemoveEntity(class Entity* entity);
 
 private:
 	void ProcessInput();
@@ -27,6 +27,7 @@ private:
 	std::vector<class Entity*> gEntities;
 	std::vector<class Entity*> gPendingEntitys;
 
+	class InputSystem* gInputSystem;
 	class Renderer* gRenderer;
 
 	Uint32 gTicksCount;

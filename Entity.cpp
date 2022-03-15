@@ -39,17 +39,17 @@ void Entity::UpdateComponents(float deltaTime) {
 
 void Entity::UpdateEntity(float deltaTime) {}
 
-void Entity::ProcessInput(const uint8_t* keyState) {
+void Entity::ProcessInput(const InputState& state) {
 	if (eState == Alive) {
 		for (auto comp : eComponents) {
-			comp->ProcessInput(keyState);
+			comp->ProcessInput(state);
 		}
 
-		EntityInput(keyState);
+		EntityInput(state);
 	}
 }
 
-void Entity::EntityInput(const uint8_t* keyState) {}
+void Entity::EntityInput(const InputState& input) {}
 
 void Entity::CalculateWorldTransform() {
 	if (eRecalculateWorldTransform) {

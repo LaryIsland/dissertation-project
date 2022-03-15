@@ -2,6 +2,7 @@
 #include <vector>
 #include "Math.h"
 #include <cstdint>
+#include "InputSystem.h"
 
 class Entity {
 public:
@@ -17,8 +18,8 @@ public:
 	void UpdateComponents(float deltaTime);
 	virtual void UpdateEntity(float deltaTime);
 
-	void ProcessInput(const uint8_t* keyState);
-	virtual void EntityInput(const uint8_t* keyState);
+	void ProcessInput(const InputState& state);
+	virtual void EntityInput(const InputState& state);
 
 	const Vector3& GetPosition() const { return ePosition; }
 	void SetPosition(const Vector3& pos) { ePosition = pos; eRecalculateWorldTransform = true; }
