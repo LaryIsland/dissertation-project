@@ -1,3 +1,4 @@
+#include "Math.h"
 #include "MoveComponent.h"
 #include "Entity.h"
 
@@ -25,7 +26,7 @@ void MoveComponent::Update(float deltaTime) {
 
 	if (!Math::NearZero(mSideSpeed)) {
 		Vector3 pos = cOwner->GetPosition();
-		pos += cOwner->GetSideward() * mSideSpeed * deltaTime;
+		pos += Vector3::UnitX * mSideSpeed * deltaTime;
 		cOwner->SetPosition(pos);
 	}
 }

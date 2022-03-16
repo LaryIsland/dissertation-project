@@ -4,9 +4,16 @@
 #include "Renderer.h"
 #include "Game.h"
 #include "InputSystem.h"
+#include <iostream>
+using namespace std;
 
 PlayerEntity::PlayerEntity(Game* game) : Entity(game) {
 	pMoveComp = new MoveComponent(this);
+	rightKey = SDL_SCANCODE_D;
+	leftKey = SDL_SCANCODE_A;
+	upKey = SDL_SCANCODE_W;
+	downKey = SDL_SCANCODE_S;
+	sideSpeed = 300.0f;
 }
 
 void PlayerEntity::UpdateEntity(float deltaTime) {
@@ -14,24 +21,63 @@ void PlayerEntity::UpdateEntity(float deltaTime) {
 }
 
 void PlayerEntity::EntityInput(const InputState& state) {
-	float forwardSpeed = 0.0f;
-	float sideSpeed = 0.0f;
-	float angularSpeed = 0.0f;
-
-	if (state.Keyboard.GetKeyState(rightKey) == RisingEdge || state.Keyboard.GetKeyState(rightKey) == Holding) {
-		forwardSpeed += 300.0f;
-	}
-	if (state.Keyboard.GetKeyState(leftKey) == RisingEdge || state.Keyboard.GetKeyState(leftKey) == Holding) {
-		forwardSpeed -= 300.0f;
-	}
-	if (state.Keyboard.GetKeyState(upKey) == RisingEdge && GetPosition().y <= 0.0f) {
-		//verticalSpeed += 300.0f;
-	}
-	if (state.Keyboard.GetKeyState(downKey) == RisingEdge || state.Keyboard.GetKeyState(downKey) == Holding && GetPosition().y <= 0.0f) {
-		//Crouch
+	switch (state.Keyboard.GetKeyState(rightKey)) {
+	case RisingEdge:
+	case Holding:
+		SetPlayerState(WalkingRight);
+		break;
+	case FallingEdge:
+		SetPlayerState(Standing);
+		break;
 	}
 
-	pMoveComp->SetForwardSpeed(forwardSpeed);
-	pMoveComp->SetSideSpeed(sideSpeed);
-	pMoveComp->SetAngularSpeed(angularSpeed);
+	switch (state.Keyboard.GetKeyState(leftKey)) {
+	case RisingEdge:
+	case Holding:
+		SetPlayerState(WalkingLeft);
+		break;
+	case FallingEdge:
+		SetPlayerState(Standing);
+		break;
+	}
+
+	switch (state.Keyboard.GetKeyState(upKey)) {
+	case RisingEdge:
+		SetPlayerState(Jumping);
+		break;
+	}
+
+	switch (state.Keyboard.GetKeyState(downKey)) {
+	case RisingEdge:
+	case Holding:
+		SetPlayerState(Crouching);
+		break;
+	}
+}
+
+void PlayerEntity::SetPlayerState(PlayerState playerState) {
+	switch (playerState) {
+	case Standing:
+		if (currState == WalkingLeft || currState == WalkingRight) {
+			currState = Standing;
+			cout << "Standing\n";
+			pMoveComp->SetSideSpeed(0);
+
+		}
+		break;
+	case WalkingRight:
+		if (currState == Standing) {
+			currState = WalkingRight;
+			cout << "Walking Right\n";
+			pMoveComp->SetSideSpeed(sideSpeed);
+		}
+		break;
+	case WalkingLeft:
+		if (currState == Standing) {
+			currState = WalkingLeft;
+			cout << "Walking Left\n";
+			pMoveComp->SetSideSpeed(-sideSpeed);
+		}
+		break;
+	}
 }

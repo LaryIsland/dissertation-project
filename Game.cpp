@@ -8,6 +8,8 @@
 #include "PlayerEntity.h"
 #include "InputSystem.h"
 #include "SDL_scancode.h"
+#include <iostream>
+using namespace std;
 
 Game::Game() :
 	gRenderer(nullptr),
@@ -119,24 +121,28 @@ void Game::LoadData() {
 
 	// Player 1 loading
 	PlayerEntity* Player1 = new PlayerEntity(this);
-	Player1->SetPosition(Vector3(200.0f, 0.0f, 0.0f));
+	Player1->SetPosition(Vector3(-500.0f, 0.0f, 0.0f));
 	Player1->SetScale(100.0f);
-	Player1->SetRightKey(SDL_SCANCODE_D);
-	Player1->SetLeftKey(SDL_SCANCODE_A);
-	Player1->SetUpKey(SDL_SCANCODE_W);
-	Player1->SetDownKey(SDL_SCANCODE_S);
-	Quaternion q(Vector3::UnitX, Math::TwoPi);
-	q = Quaternion::Concatenate(q, Quaternion(Vector3::UnitZ, Math::Pi + Math::Pi / 4.0f));
-	Player1->SetRotation(q);
+	Player1->SetRotation(Quaternion(0.5f, -0.5f, -0.5f, -0.5f));
 	MeshComponent* meshPlayer1 = new MeshComponent(Player1);
-	MoveComponent* movePlayer1 = new MoveComponent(Player1);
 	meshPlayer1->SetMesh(gRenderer->GetMesh("Assets/Suzanne.mesh"));
-	movePlayer1->SetAngularSpeed(Math::Pi / 8.0f);
+
+	// Player 2 loading
+	PlayerEntity* Player2 = new PlayerEntity(this);
+	Player2->SetPosition(Vector3(500.0f, 0.0f, 0.0f));
+	Player2->SetScale(100.0f);
+	Player2->SetRotation(Quaternion(-0.5f, -0.5f, -0.5f, 0.5f));
+	MeshComponent* meshPlayer2 = new MeshComponent(Player2);
+	meshPlayer2->SetMesh(gRenderer->GetMesh("Assets/Suzanne.mesh"));
+	Player2->SetRightKey(SDL_SCANCODE_L);
+	Player2->SetLeftKey(SDL_SCANCODE_J);
+	Player2->SetUpKey(SDL_SCANCODE_I);
+	Player2->SetDownKey(SDL_SCANCODE_K);
 
 	Entity* floor = new Entity(this);
-	floor->SetPosition(Vector3(200.0f, 0.0f, -150.0f));
-	floor->SetScale(500.0f);
-	floor->SetRotation(q);
+	floor->SetPosition(Vector3(0.0f, -100.0f, 200.0f));
+	floor->SetScale(200.0f);
+	floor->SetRotation(Quaternion(-0.707f, 0.0f, 0.0f, 0.707f));
 	MeshComponent* meshFloor = new MeshComponent(floor);
 	meshFloor->SetMesh(gRenderer->GetMesh("Assets/Plane.mesh"));
 
