@@ -11,7 +11,8 @@ CameraEntity::CameraEntity(Game* game) : Entity(game) {
 void CameraEntity::UpdateEntity(float deltaTime) {
 	Entity::UpdateEntity(deltaTime);
 
-	SetPosition(Vector3(0.0f, 100.0f, -1000.0f));
+	
+	SetPosition(Vector3((Player1->GetPosition().x + Player2->GetPosition().x) / 2, 100.0f, -1000.0f));
 	SetRotation(Quaternion(0.0f, -0.707f, 0.0f, 0.707f));
 	Vector3 cameraPos = GetPosition();
 	Vector3 target = GetPosition() + GetForward();

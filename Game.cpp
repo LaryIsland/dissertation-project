@@ -155,6 +155,7 @@ void Game::LoadData() {
 	dir.lSpecColor = Vector3(0.8f, 0.8f, 0.8f);
 
 	gCameraEntity = new CameraEntity(this);
+	gCameraEntity->SetPlayers(Player1, Player2);
 }
 
 void Game::UnloadData() {
