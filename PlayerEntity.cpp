@@ -21,6 +21,7 @@ void PlayerEntity::UpdateEntity(float deltaTime) {
 }
 
 void PlayerEntity::EntityInput(const InputState& state) {
+	// Keyboard Input
 	switch (state.Keyboard.GetKeyState(rightKey)) {
 	case RisingEdge:
 	case Holding:
@@ -51,6 +52,24 @@ void PlayerEntity::EntityInput(const InputState& state) {
 	case RisingEdge:
 	case Holding:
 		SetPlayerState(Crouching);
+		break;
+	}
+
+
+	// Controller Input
+	switch (state.ControllerOne.GetLeftStick().x >= 0.7 * 32768) {
+	case true:
+		SetPlayerState(WalkingRight);
+		break;
+	case false:
+		switch (state.ControllerOne.GetLeftStick().x <= -0.7 * 32768) {
+		case true:
+			SetPlayerState(WalkingLeft);
+			break;
+		case false:
+			SetPlayerState(Standing);
+			break;
+		}
 		break;
 	}
 }
