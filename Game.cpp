@@ -121,7 +121,7 @@ void Game::LoadData() {
 
 	// Player 1 loading
 	PlayerEntity* Player1 = new PlayerEntity(this);
-	Player1->SetPosition(Vector3(-500.0f, 0.0f, 0.0f));
+	Player1->SetPosition(Vector3(-300.0f, 0.0f, 0.0f));
 	Player1->SetScale(100.0f);
 	Player1->SetRotation(Quaternion(0.5f, -0.5f, -0.5f, -0.5f));
 	MeshComponent* meshPlayer1 = new MeshComponent(Player1);
@@ -130,7 +130,7 @@ void Game::LoadData() {
 
 	// Player 2 loading
 	PlayerEntity* Player2 = new PlayerEntity(this);
-	Player2->SetPosition(Vector3(500.0f, 0.0f, 0.0f));
+	Player2->SetPosition(Vector3(300.0f, 0.0f, 0.0f));
 	Player2->SetScale(100.0f);
 	Player2->SetRotation(Quaternion(-0.5f, -0.5f, -0.5f, 0.5f));
 	MeshComponent* meshPlayer2 = new MeshComponent(Player2);
@@ -142,11 +142,25 @@ void Game::LoadData() {
 	Player2->SetDownKey(SDL_SCANCODE_K);
 
 	Entity* floor = new Entity(this);
-	floor->SetPosition(Vector3(0.0f, -100.0f, 200.0f));
-	floor->SetScale(200.0f);
+	floor->SetPosition(Vector3(0.0f, -100.0f, 0.0f));
+	floor->SetScale(300.0f);
 	floor->SetRotation(Quaternion(-0.707f, 0.0f, 0.0f, 0.707f));
 	MeshComponent* meshFloor = new MeshComponent(floor);
 	meshFloor->SetMesh(gRenderer->GetMesh("Assets/Plane.mesh"));
+
+	Entity* leftWall = new Entity(this);
+	leftWall->SetPosition(Vector3(-1000.0f, 300.0f, 300.0f));
+	leftWall->SetScale(200.0f);
+	leftWall->SetRotation(Quaternion(0.0f, 0.643f, 0.0f, 0.766f));
+	MeshComponent* meshLeftWall = new MeshComponent(leftWall);
+	meshLeftWall->SetMesh(gRenderer->GetMesh("Assets/Plane.mesh"));
+
+	Entity* rightWall = new Entity(this);
+	rightWall->SetPosition(Vector3(1000.0f, 300.0f, 300.0f));
+	rightWall->SetScale(200.0f);
+	rightWall->SetRotation(Quaternion(0.0f, 0.766f, 0.0f, 0.643f));
+	MeshComponent* meshRightWall = new MeshComponent(rightWall);
+	meshRightWall->SetMesh(gRenderer->GetMesh("Assets/Plane.mesh"));
 
 	gRenderer->SetAmbientLight(Vector3(0.2f, 0.2f, 0.2f));
 	DirectionalLight& dir = gRenderer->GetDirectionalLight();

@@ -121,7 +121,7 @@ bool Renderer::LoadShaders()
 
 	rMeshShader->SetActive();
 		rView = Matrix4::CreateLookAt(Vector3::Zero, Vector3::UnitX, Vector3::UnitZ);
-	rProjection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(40.0f),
+	rProjection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(30.0f),
 		rScreenWidth, rScreenHeight, 25.0f, 10000.0f);
 	//rProjection = Matrix4::CreateOrtho(rScreenWidth, rScreenHeight, 25.0f, 10000.0f);
 	rMeshShader->SetMatrixUniform("uViewProj", rView * rProjection);
