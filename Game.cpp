@@ -126,6 +126,7 @@ void Game::LoadData() {
 	Player1->SetRotation(Quaternion(0.5f, -0.5f, -0.5f, -0.5f));
 	MeshComponent* meshPlayer1 = new MeshComponent(Player1);
 	meshPlayer1->SetMesh(gRenderer->GetMesh("Assets/Suzanne.mesh"));
+	Player1->SetControllerNum(1);
 
 	// Player 2 loading
 	PlayerEntity* Player2 = new PlayerEntity(this);
@@ -134,6 +135,7 @@ void Game::LoadData() {
 	Player2->SetRotation(Quaternion(-0.5f, -0.5f, -0.5f, 0.5f));
 	MeshComponent* meshPlayer2 = new MeshComponent(Player2);
 	meshPlayer2->SetMesh(gRenderer->GetMesh("Assets/Suzanne.mesh"));
+	//Player2->SetControllerNum(2);
 	Player2->SetRightKey(SDL_SCANCODE_L);
 	Player2->SetLeftKey(SDL_SCANCODE_J);
 	Player2->SetUpKey(SDL_SCANCODE_I);

@@ -22,55 +22,76 @@ void PlayerEntity::UpdateEntity(float deltaTime) {
 
 void PlayerEntity::EntityInput(const InputState& state) {
 	// Keyboard Input
-	switch (state.Keyboard.GetKeyState(rightKey)) {
-	case RisingEdge:
-	case Holding:
-		SetPlayerState(WalkingRight);
-		break;
-	case FallingEdge:
-		SetPlayerState(Standing);
-		break;
-	}
+	if (controllerNum == 0) {
+		switch (state.Keyboard.GetKeyState(rightKey)) {
+		case RisingEdge:
+		case Holding:
+			SetPlayerState(WalkingRight);
+			break;
+		case FallingEdge:
+			SetPlayerState(Standing);
+			break;
+		}
 
-	switch (state.Keyboard.GetKeyState(leftKey)) {
-	case RisingEdge:
-	case Holding:
-		SetPlayerState(WalkingLeft);
-		break;
-	case FallingEdge:
-		SetPlayerState(Standing);
-		break;
-	}
+		switch (state.Keyboard.GetKeyState(leftKey)) {
+		case RisingEdge:
+		case Holding:
+			SetPlayerState(WalkingLeft);
+			break;
+		case FallingEdge:
+			SetPlayerState(Standing);
+			break;
+		}
 
-	switch (state.Keyboard.GetKeyState(upKey)) {
-	case RisingEdge:
-		SetPlayerState(Jumping);
-		break;
-	}
+		switch (state.Keyboard.GetKeyState(upKey)) {
+		case RisingEdge:
+			SetPlayerState(Jumping);
+			break;
+		}
 
-	switch (state.Keyboard.GetKeyState(downKey)) {
-	case RisingEdge:
-	case Holding:
-		SetPlayerState(Crouching);
-		break;
+		switch (state.Keyboard.GetKeyState(downKey)) {
+		case RisingEdge:
+		case Holding:
+			SetPlayerState(Crouching);
+			break;
+		}
 	}
 
 
 	// Controller Input
-	switch (state.ControllerOne.GetLeftStick().x >= 0.7 * 32768) {
-	case true:
-		SetPlayerState(WalkingRight);
-		break;
-	case false:
-		switch (state.ControllerOne.GetLeftStick().x <= -0.7 * 32768) {
+	else if (controllerNum == 1) {
+		switch (state.ControllerOne.GetLeftStick().x >= 0.7 * 32768) {
 		case true:
-			SetPlayerState(WalkingLeft);
+			SetPlayerState(WalkingRight);
 			break;
 		case false:
-			SetPlayerState(Standing);
+			switch (state.ControllerOne.GetLeftStick().x <= -0.7 * 32768) {
+			case true:
+				SetPlayerState(WalkingLeft);
+				break;
+			case false:
+				SetPlayerState(Standing);
+				break;
+			}
 			break;
 		}
-		break;
+	}
+	else if (controllerNum == 2) {
+		switch (state.ControllerTwo.GetLeftStick().x >= 0.7 * 32768) {
+		case true:
+			SetPlayerState(WalkingRight);
+			break;
+		case false:
+			switch (state.ControllerTwo.GetLeftStick().x <= -0.7 * 32768) {
+			case true:
+				SetPlayerState(WalkingLeft);
+				break;
+			case false:
+				SetPlayerState(Standing);
+				break;
+			}
+			break;
+		}
 	}
 }
 

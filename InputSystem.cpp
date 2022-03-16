@@ -57,14 +57,14 @@ bool InputSystem::Initialize() {
 	memset(state.Keyboard.prevState, 0, SDL_NUM_SCANCODES);
 
 	controllerOne = SDL_GameControllerOpen(0);
-	//controllerTwo = SDL_GameControllerOpen(1);
+	controllerTwo = SDL_GameControllerOpen(1);
 
 	state.ControllerOne.isConnected = (controllerOne != nullptr);
 	memset(state.ControllerOne.currButtons, 0, SDL_CONTROLLER_BUTTON_MAX);
 	memset(state.ControllerOne.prevButtons, 0, SDL_CONTROLLER_BUTTON_MAX);
-	//state.ControllerTwo.isConnected = (controllerTwo != nullptr);
-	//memset(state.ControllerTwo.currButtons, 0, SDL_CONTROLLER_BUTTON_MAX);
-	//memset(state.ControllerTwo.prevButtons, 0, SDL_CONTROLLER_BUTTON_MAX);
+	state.ControllerTwo.isConnected = (controllerTwo != nullptr);
+	memset(state.ControllerTwo.currButtons, 0, SDL_CONTROLLER_BUTTON_MAX);
+	memset(state.ControllerTwo.prevButtons, 0, SDL_CONTROLLER_BUTTON_MAX);
 
 	return true;
 }
@@ -72,9 +72,9 @@ bool InputSystem::Initialize() {
 void InputSystem::Update() {
 	memcpy(state.Keyboard.prevState, state.Keyboard.currState, SDL_NUM_SCANCODES);
 	memcpy(state.ControllerOne.prevButtons, state.ControllerOne.currButtons, SDL_CONTROLLER_BUTTON_MAX);
-	
+	memcpy(state.ControllerTwo.prevButtons, state.ControllerTwo.currButtons, SDL_CONTROLLER_BUTTON_MAX);
 
-	// Controller
+	// Controller One
 	// Buttons
 	for (int i = 0; i < SDL_CONTROLLER_BUTTON_MAX; i++) {
 		state.ControllerOne.currButtons[i] = SDL_GameControllerGetButton(controllerOne, SDL_GameControllerButton(i));
@@ -94,6 +94,26 @@ void InputSystem::Update() {
 	AxisX = SDL_GameControllerGetAxis(controllerOne, SDL_CONTROLLER_AXIS_RIGHTX);
 	AxisY = -SDL_GameControllerGetAxis(controllerOne, SDL_CONTROLLER_AXIS_RIGHTY);
 	state.ControllerOne.rightStick = Vector2(AxisX, AxisY);
+
+
+	// Controller Two
+	// Buttons
+	for (int i = 0; i < SDL_CONTROLLER_BUTTON_MAX; i++) {
+		state.ControllerTwo.currButtons[i] = SDL_GameControllerGetButton(controllerTwo, SDL_GameControllerButton(i));
+	}
+
+	// Triggers
+	state.ControllerTwo.leftTrigger = SDL_GameControllerGetAxis(controllerTwo, SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+	state.ControllerTwo.rightTrigger = SDL_GameControllerGetAxis(controllerTwo, SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+
+	// Sticks
+	AxisX = SDL_GameControllerGetAxis(controllerTwo, SDL_CONTROLLER_AXIS_LEFTX);
+	AxisY = -SDL_GameControllerGetAxis(controllerTwo, SDL_CONTROLLER_AXIS_LEFTY);
+	state.ControllerTwo.leftStick = Vector2(AxisX, AxisY);
+
+	AxisX = SDL_GameControllerGetAxis(controllerTwo, SDL_CONTROLLER_AXIS_RIGHTX);
+	AxisY = -SDL_GameControllerGetAxis(controllerTwo, SDL_CONTROLLER_AXIS_RIGHTY);
+	state.ControllerTwo.rightStick = Vector2(AxisX, AxisY);
 
 	SDL_PumpEvents();
 }

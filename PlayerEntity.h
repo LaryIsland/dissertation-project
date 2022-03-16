@@ -29,6 +29,8 @@ public:
 	void SetLeftKey(SDL_Scancode key) { leftKey = key; }
 	void SetUpKey(SDL_Scancode key) { upKey = key; }
 	void SetDownKey(SDL_Scancode key) { downKey = key; }
+
+	void SetControllerNum(int num) { controllerNum = num; }
 private:
 	PlayerState currState = Standing;
 
@@ -38,6 +40,8 @@ private:
 	SDL_Scancode leftKey;
 	SDL_Scancode upKey;
 	SDL_Scancode downKey;
+
+	int controllerNum = 0;
 
 	float sideSpeed;
 };
