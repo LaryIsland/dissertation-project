@@ -62,7 +62,7 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer) {
 	mRadius = 0.0f;
 	for (rapidjson::SizeType i = 0; i < vertsJson.Size(); i++) {
 		const rapidjson::Value& vert = vertsJson[i];
-		if (!vert.IsArray() || vert.Size() != 8) {
+		if (!vert.IsArray()) {
 			SDL_Log("Unexpected vertex format for %s", fileName.c_str());
 			return false;
 		}
@@ -77,18 +77,23 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer) {
 				vertices.emplace_back(tmp);
 			}
 		}
-		else {
-			for (rapidjson::SizeType i = 0; i < vert.Size(); i++) {
-				tmp.f = static_cast<float>(vert[i].GetDouble());
+		else if (layout == VertexArray::PosNormSkin) {
+			for (rapidjson::SizeType j = 0; j < 6; j++) {
+				tmp.f = static_cast<float>(vert[j].GetDouble());
 				vertices.emplace_back(tmp);
 			}
 			
-			Vertex tmp;
 			for (rapidjson::SizeType j = 6; j < 14; j += 4) {
 				tmp.b[0] = vert[j].GetUint();
 				tmp.b[1] = vert[j + 1].GetUint();
 				tmp.b[2] = vert[j + 2].GetUint();
 				tmp.b[3] = vert[j + 3].GetUint();
+				vertices.emplace_back(tmp);
+			}
+
+			for (rapidjson::SizeType j = 14; j < vert.Size(); j++)
+			{
+				tmp.f = vert[j].GetDouble();
 				vertices.emplace_back(tmp);
 			}
 		}

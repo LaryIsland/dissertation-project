@@ -6,9 +6,11 @@
 #include "Renderer.h"
 #include "VertexArray.h"
 
-MeshComponent::MeshComponent(Entity* owner):
+MeshComponent::MeshComponent(Entity* owner, bool isSkeletal):
 	Component(owner),
-	mMesh(nullptr) {
+	mMesh(nullptr),
+	mIsSkeletal(isSkeletal)
+{
 	cOwner->GetGame()->GetRenderer()->AddMeshComp(this);
 }
 
