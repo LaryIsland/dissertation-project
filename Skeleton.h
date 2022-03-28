@@ -2,10 +2,12 @@
 #include <string>
 #include <vector>
 #include "Math.h"
+#include "BoneTransform.h"
 
 class Skeleton {
 public:
 	struct Bone {
+		BoneTransform bLocalTPose;
 		std::string bName;
 		int bParent;
 	};
