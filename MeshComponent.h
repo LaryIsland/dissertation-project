@@ -7,7 +7,9 @@ public:
 	~MeshComponent();
 	virtual void Draw(class Shader* shader);
 	virtual void SetMesh(class Mesh* mesh) { mMesh = mesh; }
+	bool GetIsSkeletal() const { return mIsSkeletal; }
 
 protected:
 	class Mesh* mMesh;
+	bool mIsSkeletal;
 };

@@ -1,7 +1,7 @@
 #include "VertexArray.h"
 #include <glew.h>
 
-VertexArray::VertexArray(const float* verts, unsigned int numVerts, Layout layout, const unsigned int* indices, unsigned int numIndices):
+VertexArray::VertexArray(const void* verts, unsigned int numVerts, Layout layout, const unsigned int* indices, unsigned int numIndices):
 	mNumVerts(numVerts),
 	mNumIndices(numIndices)
 {

@@ -4,11 +4,13 @@
 #include "Shader.h"
 #include "VertexArray.h"
 #include "MeshComponent.h"
+#include "SkeletalMeshComponent.h"
 #include <glew.h>
 
 Renderer::Renderer(Game* game) :
 	gGame(game),
-	rMeshShader(nullptr)
+	rMeshShader(nullptr),
+	rSkinShader(nullptr)
 {}
 
 Renderer::~Renderer() {}
@@ -55,6 +57,8 @@ bool Renderer::Initialize(float screenWidth, float screenHeight) {
 void Renderer::Shutdown() {
 	rMeshShader->Unload();
 	delete rMeshShader;
+	rSkinShader->Unload();
+	delete rSkinShader;
 	SDL_GL_DeleteContext(rContext);
 	SDL_DestroyWindow(rWindow);
 }
@@ -80,16 +84,35 @@ void Renderer::Draw() {
 		mc->Draw(rMeshShader);
 	}
 
+	rSkinShader->SetActive();
+	rSkinShader->SetMatrixUniform("uViewProj", rView * rProjection);
+	SetLightUniforms(rSkinShader);
+	for (auto sk : rSkeleMeshComps) {
+		sk->Draw(rSkinShader);
+	}
+
 	SDL_GL_SwapWindow(rWindow);
 }
 
 void Renderer::AddMeshComp(MeshComponent* mesh) {
-	rMeshComps.emplace_back(mesh);
+	if (mesh->GetIsSkeletal()) {
+		SkeletalMeshComponent* skeleMesh = static_cast<SkeletalMeshComponent*>(mesh);
+		rSkeleMeshComps.emplace_back(skeleMesh);
+	} else { rMeshComps.emplace_back(mesh); }
+	
 }
 
 void Renderer::RemoveMeshComp(MeshComponent* mesh) {
-	auto iter = std::find(rMeshComps.begin(), rMeshComps.end(), mesh);
-	rMeshComps.erase(iter);
+	if (mesh->GetIsSkeletal())
+	{
+		SkeletalMeshComponent* skeleMesh = static_cast<SkeletalMeshComponent*>(mesh);
+		auto iter = std::find(rSkeleMeshComps.begin(), rSkeleMeshComps.end(), skeleMesh);
+		rSkeleMeshComps.erase(iter);
+	}
+	else {
+		auto iter = std::find(rMeshComps.begin(), rMeshComps.end(), mesh);
+		rMeshComps.erase(iter);
+	}
 }
 
 Mesh* Renderer::GetMesh(const std::string& fileName) {
@@ -113,18 +136,23 @@ Mesh* Renderer::GetMesh(const std::string& fileName) {
 
 bool Renderer::LoadShaders()
 {
+	rView = Matrix4::CreateLookAt(Vector3::Zero, Vector3::UnitX, Vector3::UnitZ);
+	rProjection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(30.0f), rScreenWidth, rScreenHeight, 25.0f, 10000.0f);
+	//rProjection = Matrix4::CreateOrtho(rScreenWidth, rScreenHeight, 25.0f, 10000.0f);
+
 	rMeshShader = new Shader();
-	if (!rMeshShader->Load("Shaders/Phong.vert", "Shaders/Phong.frag"))
-	{
-		return false;
-	}
+	if (!rMeshShader->Load("Shaders/Phong.vert", "Shaders/Phong.frag")) { return false; }
 
 	rMeshShader->SetActive();
-		rView = Matrix4::CreateLookAt(Vector3::Zero, Vector3::UnitX, Vector3::UnitZ);
-	rProjection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(30.0f),
-		rScreenWidth, rScreenHeight, 25.0f, 10000.0f);
-	//rProjection = Matrix4::CreateOrtho(rScreenWidth, rScreenHeight, 25.0f, 10000.0f);
 	rMeshShader->SetMatrixUniform("uViewProj", rView * rProjection);
+
+
+	rSkinShader = new Shader();
+	if (!rSkinShader->Load("Shaders/Skin.vert", "Shaders/Phong.frag")) { return false; }
+
+	rSkinShader->SetActive();
+	rSkinShader->SetMatrixUniform("uViewProj", rView * rProjection);
+
 	return true;
 }
 

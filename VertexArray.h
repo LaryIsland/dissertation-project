@@ -6,7 +6,7 @@ public:
 		PosNormSkin,
 	};
 
-	VertexArray(const float* verts, unsigned int numVerts, Layout layout, const unsigned int* indices, unsigned int numIndices);
+	VertexArray(const void* verts, unsigned int numVerts, Layout layout, const unsigned int* indices, unsigned int numIndices);
 	~VertexArray();
 
 	void SetActive();

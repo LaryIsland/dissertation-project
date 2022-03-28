@@ -42,10 +42,12 @@ private:
 	std::unordered_map<std::string, class Mesh*> rMeshes;
 
 	std::vector<class MeshComponent*> rMeshComps;
+	std::vector<class SkeletalMeshComponent*> rSkeleMeshComps;
 
 	class Game* gGame;
 
 	class Shader* rMeshShader;
+	class Shader* rSkinShader;
 
 	Matrix4 rView;
 	Matrix4 rProjection;

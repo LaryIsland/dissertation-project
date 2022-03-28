@@ -6,6 +6,13 @@
 #include <rapidjson/document.h>
 #include <SDL_log.h>
 
+namespace {
+	union Vertex {
+		float f;
+		uint8_t b[4];
+	};
+}
+
 Mesh::Mesh() :
 	mVertexArray(nullptr),
 	mRadius(0.0f),
@@ -33,7 +40,14 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer) {
 		return false;
 	}
 
+	VertexArray::Layout layout = VertexArray::PosNorm;
 	size_t vertSize = 8;
+
+	std::string vertexFormat = doc["vertexformat"].GetString();
+	if (vertexFormat == "PosNormSkin") {
+		layout = VertexArray::PosNormSkin;
+		vertSize = 10;
+	}
 
 	mSpecPower = static_cast<float>(doc["specularPower"].GetDouble());
 
@@ -43,7 +57,7 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer) {
 		return false;
 	}
 
-	std::vector<float> vertices;
+	std::vector<Vertex> vertices;
 	vertices.reserve(vertsJson.Size() * vertSize);
 	mRadius = 0.0f;
 	for (rapidjson::SizeType i = 0; i < vertsJson.Size(); i++) {
@@ -56,8 +70,27 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer) {
 		Vector3 pos(vert[0].GetDouble(), vert[1].GetDouble(), vert[2].GetDouble());
 		mRadius = Math::Max(mRadius, pos.LengthSq());
 
-		for (rapidjson::SizeType i = 0; i < vert.Size(); i++) {
-			vertices.emplace_back(static_cast<float>(vert[i].GetDouble()));
+		Vertex tmp;
+		if (layout == VertexArray::PosNorm) {
+			for (rapidjson::SizeType i = 0; i < vert.Size(); i++) {
+				tmp.f = static_cast<float>(vert[i].GetDouble());
+				vertices.emplace_back(tmp);
+			}
+		}
+		else {
+			for (rapidjson::SizeType i = 0; i < vert.Size(); i++) {
+				tmp.f = static_cast<float>(vert[i].GetDouble());
+				vertices.emplace_back(tmp);
+			}
+			
+			Vertex tmp;
+			for (rapidjson::SizeType j = 6; j < 14; j += 4) {
+				tmp.b[0] = vert[j].GetUint();
+				tmp.b[1] = vert[j + 1].GetUint();
+				tmp.b[2] = vert[j + 2].GetUint();
+				tmp.b[3] = vert[j + 3].GetUint();
+				vertices.emplace_back(tmp);
+			}
 		}
 	}
 
@@ -83,8 +116,7 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer) {
 		indices.emplace_back(ind[2].GetUint());
 	}
 
-	mVertexArray = new VertexArray(vertices.data(), static_cast<unsigned>(vertices.size()) / vertSize,
-		indices.data(), static_cast<unsigned>(indices.size()));
+	mVertexArray = new VertexArray(vertices.data(), static_cast<unsigned>(vertices.size()) / vertSize, layout, indices.data(), static_cast<unsigned>(indices.size()));
 	return true;
 }
 
