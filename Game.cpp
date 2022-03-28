@@ -9,6 +9,7 @@
 #include "InputSystem.h"
 #include "SDL_scancode.h"
 #include <iostream>
+#include "Skeleton.h"
 using namespace std;
 
 Game::Game() :
@@ -106,27 +107,14 @@ void Game::GenerateOutput() {
 }
 
 void Game::LoadData() {
-	/*	Suzanne rotation demo
-	Entity* Suzanne = new Entity(this);
-	Suzanne->SetPosition(Vector3(200.0f, 75.0f, 0.0f));
-	Suzanne->SetScale(100.0f);
-	Quaternion q(Vector3::UnitX, Math::TwoPi);
-	q = Quaternion::Concatenate(q, Quaternion(Vector3::UnitZ, Math::Pi + Math::Pi / 4.0f));
-	Suzanne->SetRotation(q);
-	MeshComponent* meshSuzanne = new MeshComponent(Suzanne);
-	MoveComponent* moveSuzanne = new MoveComponent(Suzanne);
-	meshSuzanne->SetMesh(gRenderer->GetMesh("Assets/Suzanne.mesh"));
-	moveSuzanne->SetAngularSpeed(Math::Pi / 8.0f);
-	*/
-
 	// Player 1 loading
 	PlayerEntity* Player1 = new PlayerEntity(this);
-	Player1->SetPosition(Vector3(-300.0f, 0.0f, 0.0f));
-	Player1->SetScale(100.0f);
-	Player1->SetRotation(Quaternion(0.5f, -0.5f, -0.5f, -0.5f));
+	Player1->SetPosition(Vector3(-300.0f, -100.0f, 0.0f));
+	Player1->SetScale(2.0f);
+	Player1->SetRotation(Quaternion(-0.5f, -0.5f, -0.5f, 0.5f));
 	MeshComponent* meshPlayer1 = new MeshComponent(Player1);
-	meshPlayer1->SetMesh(gRenderer->GetMesh("Assets/Suzanne.mesh"));
-	Player1->SetControllerNum(1);
+	meshPlayer1->SetMesh(gRenderer->GetMesh("Assets/CatWarrior.mesh"));
+	//Player1->SetControllerNum(1);
 
 	// Player 2 loading
 	PlayerEntity* Player2 = new PlayerEntity(this);
@@ -180,6 +168,11 @@ void Game::UnloadData() {
 	if (gRenderer) {
 		gRenderer->UnloadData();
 	}
+
+	for (auto skele : gSkeletons) {
+		delete skele.second;
+	}
+
 }
 
 void Game::Shutdown() {
@@ -210,5 +203,23 @@ void Game::RemoveEntity(Entity* entity) {
 	if (iter != gEntities.end()) {
 		std::iter_swap(iter, gEntities.end() - 1);
 		gEntities.pop_back();
+	}
+}
+
+Skeleton* Game::GetSkeleton(const std::string& fileName) {
+	auto iter = gSkeletons.find(fileName);
+	if (iter != gSkeletons.end()) {
+		return iter->second;
+	}
+	else {
+		Skeleton* skele = new Skeleton();
+		if (skele->Load(fileName)) {
+			gSkeletons.emplace(fileName, skele);
+		}
+		else {
+			delete skele;
+			skele = nullptr;
+		}
+		return skele;
 	}
 }
