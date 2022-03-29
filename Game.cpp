@@ -11,6 +11,7 @@
 #include <iostream>
 #include "Skeleton.h"
 #include "Animation.h"
+#include "SkeletalMeshComponent.h"
 using namespace std;
 
 Game::Game() :
@@ -112,9 +113,11 @@ void Game::LoadData() {
 	PlayerEntity* Player1 = new PlayerEntity(this);
 	Player1->SetPosition(Vector3(-300.0f, -100.0f, 0.0f));
 	Player1->SetScale(2.0f);
-	Player1->SetRotation(Quaternion(-0.5f, -0.5f, -0.5f, 0.5f));
-	MeshComponent* meshPlayer1 = new MeshComponent(Player1);
-	meshPlayer1->SetMesh(gRenderer->GetMesh("Assets/CatWarrior.mesh"));
+	Player1->SetRotation(Quaternion(-0.7070f, 0.0f, 0.0f, 0.707f));
+	SkeletalMeshComponent* skeleMeshPlayer1 = new SkeletalMeshComponent(Player1);
+	skeleMeshPlayer1->SetMesh(gRenderer->GetMesh("Assets/CatWarrior.mesh"));
+	skeleMeshPlayer1->SetSkeleton(Player1->GetGame()->GetSkeleton("Assets/CatWarrior.skele"));
+	skeleMeshPlayer1->PlayAnimation(Player1->GetGame()->GetAnimation("Assets/CatActionIdle.anim"));
 	//Player1->SetControllerNum(1);
 
 	// Player 2 loading

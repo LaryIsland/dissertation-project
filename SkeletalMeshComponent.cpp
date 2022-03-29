@@ -13,6 +13,29 @@ SkeletalMeshComponent::SkeletalMeshComponent(Entity* owner):
 	mSkeleton(nullptr)
 {}
 
+void SkeletalMeshComponent::Draw(Shader* shader) {
+	if (mMesh) {
+		shader->SetMatrixUniform("uWorldTransform", cOwner->GetWorldTransform());
+		shader->SetMatrixUniforms("uMatrixPalette", &mPalette.mEntry[0], MAX_SKELETON_BONES);
+		shader->SetFloatUniform("uSpecPower", mMesh->GetSpecPower());
+		VertexArray* va = mMesh->GetVertexArray();
+		va->SetActive();
+		glDrawElements(GL_TRIANGLES, va->GetNumIndices(), GL_UNSIGNED_INT, nullptr);
+	}
+}
+
+float SkeletalMeshComponent::PlayAnimation(const Animation* anim, float playRate) {
+	mAnimation = anim;
+	mAnimTime = 0.0f;
+	mAnimPlayRate = playRate;
+
+	if (!mAnimation) { return 0.0f; }
+
+	ComputeMatrixPalette();
+
+	return mAnimation->GetDuration();
+}
+
 void SkeletalMeshComponent::ComputeMatrixPalette() {
 	const std::vector<Matrix4>& globalInvBindPoses = mSkeleton->GetGlobalInvTPoses();
 	std::vector<Matrix4> currentPoses;

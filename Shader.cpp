@@ -44,6 +44,10 @@ void Shader::SetMatrixUniform(const char* name, const Matrix4& matrix) {
 	glUniformMatrix4fv(loc, 1, GL_TRUE, matrix.GetAsFloatPtr());
 }
 
+void Shader::SetMatrixUniforms(const char* name, Matrix4* matrices, unsigned count) {
+	GLuint loc = glGetUniformLocation(sShaderProgram, name);
+	glUniformMatrix4fv(loc, count, GL_TRUE, matrices->GetAsFloatPtr());
+}
 
 void Shader::SetVectorUniform(const char* name, const Vector3& vector) {
 	GLuint loc = glGetUniformLocation(sShaderProgram, name);

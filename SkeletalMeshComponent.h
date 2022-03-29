@@ -16,6 +16,8 @@ public:
 
 	void SetSkeleton(const class Skeleton* skele) { mSkeleton = skele; }
 
+	float PlayAnimation(const class Animation* anim, float playRate = 1.0f);
+
 protected:
 	void ComputeMatrixPalette();
 
