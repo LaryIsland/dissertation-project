@@ -10,10 +10,10 @@ out vec3 fragNormal;
 out vec3 fragWorldPos;
 
 void main() {
-		vec4 pos = vec4(inPosition, 1.0);
-		pos = pos * uWorldTransform;
-		fragWorldPos = pos.xyz;
-		gl_Position = pos * uViewProj;
+	vec4 pos = vec4(inPosition, 1.0);
+	pos = pos * uWorldTransform;
+	fragWorldPos = pos.xyz;
+	gl_Position = pos * uViewProj;
 
-		fragNormal = (vec4(inNormal, 0.0f) * uWorldTransform).xyz;
+	fragNormal = (vec4(inNormal, 0.0f) * uWorldTransform).xyz;
 }
