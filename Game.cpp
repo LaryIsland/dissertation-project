@@ -3,6 +3,7 @@
 #include "Renderer.h"
 #include "Entity.h"
 #include "MeshComponent.h"
+#include "Mesh.h"
 #include "MoveComponent.h"
 #include "CameraEntity.h"
 #include "PlayerEntity.h"
@@ -12,6 +13,7 @@
 #include "Skeleton.h"
 #include "Animation.h"
 #include "SkeletalMeshComponent.h"
+#include "BoxComponent.h"
 using namespace std;
 
 Game::Game() :
@@ -115,9 +117,12 @@ void Game::LoadData() {
 	Player1->SetScale(2.0f);
 	Player1->SetRotation(Quaternion(-0.7070f, 0.0f, 0.0f, 0.707f));
 	SkeletalMeshComponent* skeleMeshPlayer1 = new SkeletalMeshComponent(Player1);
-	skeleMeshPlayer1->SetMesh(gRenderer->GetMesh("Assets/CatWarrior.mesh"));
+	Mesh* meshPlayer1 = gRenderer->GetMesh("Assets/CatWarrior.mesh");
+	skeleMeshPlayer1->SetMesh(meshPlayer1);
 	skeleMeshPlayer1->SetSkeleton(Player1->GetGame()->GetSkeleton("Assets/CatWarrior.skele"));
 	skeleMeshPlayer1->PlayAnimation(Player1->GetGame()->GetAnimation("Assets/CatActionIdle.anim"));
+	BoxComponent* boxCompPlayer1 = new BoxComponent(Player1);
+	boxCompPlayer1->SetObjectBox(meshPlayer1->GetBox());
 	//Player1->SetControllerNum(1);
 
 	// Player 2 loading

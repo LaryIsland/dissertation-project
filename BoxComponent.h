@@ -7,12 +7,12 @@ public:
 	BoxComponent(class Entity* owner, int updateOrder = 100);
 	~BoxComponent();
 
-	void SetObjectBox(const AABB& model) { mObjectBox = model; }
-	const AABB& GetWorldBox() const { return mWorldBox; }
+	void SetObjectBox(const AABB& model) { objectBox = model; }
+	const AABB& GetWorldBox() const { return worldBox; }
 
-	void SetShouldRotate(bool value) { mShouldRotate = value; }
+	void SetShouldRotate(bool value) { shouldRotate = value; }
 private:
-	AABB mObjectBox;
-	AABB mWorldBox;
-	bool mShouldRotate;
+	AABB objectBox;
+	AABB worldBox;
+	bool shouldRotate;
 };

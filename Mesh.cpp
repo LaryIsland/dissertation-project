@@ -16,7 +16,8 @@ namespace {
 Mesh::Mesh() :
 	mVertexArray(nullptr),
 	mRadius(0.0f),
-	mSpecPower(100.0f)
+	mSpecPower(100.0f),
+	mBox(Vector2(Math::Infinity, Math::Infinity), Vector2(Math::NegInfinity, Math::NegInfinity))
 {}
 
 Mesh::~Mesh() {}
@@ -69,6 +70,9 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer) {
 
 		Vector3 pos(vert[0].GetDouble(), vert[1].GetDouble(), vert[2].GetDouble());
 		mRadius = Math::Max(mRadius, pos.LengthSq());
+
+		Vector2 AABBpos(vert[0].GetDouble(), vert[1].GetDouble());
+		mBox.UpdateMinMax(AABBpos);
 
 		Vertex tmp;
 		if (layout == VertexArray::PosNorm) {

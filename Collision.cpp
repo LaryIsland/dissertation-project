@@ -48,7 +48,7 @@ void AABB::Rotate(const Matrix3& mat) {
 }
 
 bool AABB::Contains(const Vector2& point) const {
-	return (point.x < aMin.x || point.y < aMin.y || point.x > aMax.x || point.y > aMax.y);
+	return !(point.x < aMin.x || point.y < aMin.y || point.x > aMax.x || point.y > aMax.y);
 }
 
 float AABB::MinDistSq(const Vector2& point) const {
@@ -69,7 +69,7 @@ bool Intersect(const Circle& a, const Circle& b) {
 }
 
 bool Intersect(const AABB& a, const AABB& b) {
-	return  (a.aMax.x < b.aMin.x || a.aMax.y < b.aMin.y || b.aMax.x < a.aMin.x || b.aMax.y < a.aMin.y);
+	return  !(a.aMax.x < b.aMin.x || a.aMax.y < b.aMin.y || b.aMax.x < a.aMin.x || b.aMax.y < a.aMin.y);
 }
 
 bool Intersect(const Circle& s, const AABB& box) {
