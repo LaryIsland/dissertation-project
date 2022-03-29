@@ -10,6 +10,7 @@
 #include "SDL_scancode.h"
 #include <iostream>
 #include "Skeleton.h"
+#include "Animation.h"
 using namespace std;
 
 Game::Game() :
@@ -173,6 +174,10 @@ void Game::UnloadData() {
 		delete skele.second;
 	}
 
+	for (auto anim : gAnims) {
+		delete anim.second;
+	}
+
 }
 
 void Game::Shutdown() {
@@ -221,5 +226,23 @@ Skeleton* Game::GetSkeleton(const std::string& fileName) {
 			skele = nullptr;
 		}
 		return skele;
+	}
+}
+
+Animation* Game::GetAnimation(const std::string& fileName) {
+	auto iter = gAnims.find(fileName);
+	if (iter != gAnims.end()) {
+		return iter->second;
+	}
+	else {
+		Animation* anim = new Animation();
+		if (anim->Load(fileName)) {
+			gAnims.emplace(fileName, anim);
+		}
+		else {
+			delete anim;
+			anim = nullptr;
+		}
+		return anim;
 	}
 }

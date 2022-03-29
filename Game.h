@@ -19,6 +19,7 @@ public:
 	void RemoveEntity(class Entity* entity);
 
 	class Skeleton* GetSkeleton(const std::string& fileName);
+	class Animation* GetAnimation(const std::string& fileName);
 
 private:
 	void ProcessInput();
@@ -28,6 +29,7 @@ private:
 	void UnloadData();
 
 	std::unordered_map<std::string, class Skeleton*> gSkeletons;
+	std::unordered_map<std::string, class Animation*> gAnims;
 
 	std::vector<class Entity*> gEntities;
 	std::vector<class Entity*> gPendingEntitys;
