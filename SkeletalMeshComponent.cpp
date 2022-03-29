@@ -24,6 +24,16 @@ void SkeletalMeshComponent::Draw(Shader* shader) {
 	}
 }
 
+void SkeletalMeshComponent::Update(float deltaTime) {
+	if (mAnimation && mSkeleton) {
+		mAnimTime += deltaTime * mAnimPlayRate;
+
+		while (mAnimTime > mAnimation->GetDuration()) { mAnimTime -= mAnimation->GetDuration(); }
+
+		ComputeMatrixPalette();
+	}
+}
+
 float SkeletalMeshComponent::PlayAnimation(const Animation* anim, float playRate) {
 	mAnimation = anim;
 	mAnimTime = 0.0f;

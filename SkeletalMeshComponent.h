@@ -14,6 +14,8 @@ public:
 
 	void Draw(class Shader* shader) override;
 
+	void Update(float deltaTime) override;
+
 	void SetSkeleton(const class Skeleton* skele) { mSkeleton = skele; }
 
 	float PlayAnimation(const class Animation* anim, float playRate = 1.0f);
