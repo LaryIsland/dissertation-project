@@ -10,6 +10,7 @@ public:
 	virtual void ProcessInput(const InputState& input) {}
 	virtual void OnUpdateWorldTransform() {}
 
+	class Entity* GetOwner() { return cOwner; }
 	int GetUpdateOrder() const { return cUpdateOrder; }
 
 protected:

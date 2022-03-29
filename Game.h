@@ -14,6 +14,7 @@ public:
 	void Shutdown();
 
 	class Renderer* GetRenderer() { return gRenderer; }
+	class WorldPhysics* GetWorldPhysics() { return gWorldPhysics; }
 
 	void AddEntity(class Entity* entity);
 	void RemoveEntity(class Entity* entity);
@@ -36,6 +37,7 @@ private:
 
 	class InputSystem* gInputSystem;
 	class Renderer* gRenderer;
+	class WorldPhysics* gWorldPhysics;
 
 	Uint32 gTicksCount;
 	bool gIsRunning;

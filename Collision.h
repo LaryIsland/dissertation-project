@@ -15,7 +15,6 @@ struct AABB {
 	AABB(const Vector2& min, const Vector2& max);
 
 	void UpdateMinMax(const Vector2& point);
-	void Rotate(const Matrix3& mat);
 	bool Contains(const Vector2& point) const;
 	float MinDistSq(const Vector2& point) const;
 

@@ -29,24 +29,6 @@ void AABB::UpdateMinMax(const Vector2& point) {
 	aMax.y = Math::Max(aMax.y, point.y);
 }
 
-void AABB::Rotate(const Matrix3& mat) {
-	std::array<Vector2, 4> points;
-	points[0] = aMin;
-	points[1] = Vector2(aMax.x, aMin.y);
-	points[2] = Vector2(aMin.x, aMax.y);
-	points[3] = Vector2(aMax);
-
-	Vector2 p = Vector2::Transform(points[0], mat);
-
-	aMin = p;
-	aMax = p;
-
-	for (size_t i = 1; i < points.size(); i++) {
-		p = Vector2::Transform(points[i], mat);
-		UpdateMinMax(p);
-	}
-}
-
 bool AABB::Contains(const Vector2& point) const {
 	return !(point.x < aMin.x || point.y < aMin.y || point.x > aMax.x || point.y > aMax.y);
 }

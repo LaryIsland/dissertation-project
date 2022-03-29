@@ -14,10 +14,12 @@
 #include "Animation.h"
 #include "SkeletalMeshComponent.h"
 #include "BoxComponent.h"
+#include "WorldPhysics.h"
 using namespace std;
 
 Game::Game() :
 	gRenderer(nullptr),
+	gWorldPhysics(nullptr),
 	gIsRunning(true),
 	gUpdatingEntities(false)
 {}
@@ -42,6 +44,8 @@ bool Game::Initialize() {
 		SDL_Log("InputSystem Error");
 		return false;
 	}
+
+	gWorldPhysics = new WorldPhysics(this);
 
 	LoadData();
 
@@ -193,6 +197,7 @@ void Game::Shutdown() {
 	if (gRenderer) {
 		gRenderer->Shutdown();
 	}
+	delete gWorldPhysics;
 	SDL_Quit();
 }
 
