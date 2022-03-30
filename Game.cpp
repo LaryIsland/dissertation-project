@@ -15,6 +15,7 @@
 #include "SkeletalMeshComponent.h"
 #include "BoxComponent.h"
 #include "WorldPhysics.h"
+#include "UIScreen.h"
 using namespace std;
 
 Game::Game() :
@@ -108,6 +109,10 @@ void Game::UpdateGame() {
 
 	for (auto entity : deadEntitys) {
 		delete entity;
+	}
+
+	for (auto UI : gUIStack) {
+		UI->Update(deltaTime);
 	}
 }
 
@@ -261,4 +266,8 @@ Animation* Game::GetAnimation(const std::string& fileName) {
 		}
 		return anim;
 	}
+}
+
+void Game::PushUI(UIScreen* screen) {
+	gUIStack.emplace_back(screen);
 }

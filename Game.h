@@ -19,9 +19,11 @@ public:
 
 	void AddEntity(class Entity* entity);
 	void RemoveEntity(class Entity* entity);
+	void PushUI(class UIScreen* screen);
 
 	class Skeleton* GetSkeleton(const std::string& fileName);
 	class Animation* GetAnimation(const std::string& fileName);
+	const std::vector<class UIScreen*>& GetUIStack() { return gUIStack; }
 
 private:
 	void ProcessInput();
@@ -35,6 +37,7 @@ private:
 
 	std::vector<class Entity*> gEntities;
 	std::vector<class Entity*> gPendingEntitys;
+	std::vector<class UIScreen*> gUIStack;
 
 	class InputSystem* gInputSystem;
 	class Renderer* gRenderer;
