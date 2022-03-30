@@ -18,6 +18,8 @@ public:
 	void AddBox(class BoxComponent* box);
 	void RemoveBox(class BoxComponent* box);
 
+	void TestPairwise(std::function<void(class Entity*, class Entity*)> f);
+
 private:
 	class Game* gGame;
 	std::vector<class BoxComponent*> wBoxes;

@@ -47,6 +47,8 @@ bool Game::Initialize() {
 
 	gWorldPhysics = new WorldPhysics(this);
 
+	gCamera = new CameraEntity(this);
+
 	LoadData();
 
 	gTicksCount = SDL_GetTicks();
@@ -76,8 +78,7 @@ void Game::ProcessInput() {
 	}
 }
 
-void Game::UpdateGame()
-{
+void Game::UpdateGame() {
 	while (!SDL_TICKS_PASSED(SDL_GetTicks(), gTicksCount + 16));
 
 	float deltaTime = (SDL_GetTicks() - gTicksCount) / 1000.0f;
@@ -119,23 +120,26 @@ void Game::LoadData() {
 	PlayerEntity* Player1 = new PlayerEntity(this);
 	Player1->SetPosition(Vector3(-300.0f, -100.0f, 0.0f));
 	Player1->SetScale(2.0f);
-	Player1->SetRotation(Quaternion(-0.7070f, 0.0f, 0.0f, 0.707f));
+	Player1->SetRotation(Quaternion(-0.5f, -0.5f, -0.5f, 0.5f));
 	SkeletalMeshComponent* skeleMeshPlayer1 = new SkeletalMeshComponent(Player1);
 	Mesh* meshPlayer1 = gRenderer->GetMesh("Assets/CatWarrior.mesh");
 	skeleMeshPlayer1->SetMesh(meshPlayer1);
 	skeleMeshPlayer1->SetSkeleton(Player1->GetGame()->GetSkeleton("Assets/CatWarrior.skele"));
 	skeleMeshPlayer1->PlayAnimation(Player1->GetGame()->GetAnimation("Assets/CatActionIdle.anim"));
-	BoxComponent* boxCompPlayer1 = new BoxComponent(Player1);
-	boxCompPlayer1->SetObjectBox(meshPlayer1->GetBox());
+	Player1->GetBoxComp()->SetObjectBox(meshPlayer1->GetBox());
 	//Player1->SetControllerNum(1);
 
 	// Player 2 loading
 	PlayerEntity* Player2 = new PlayerEntity(this);
-	Player2->SetPosition(Vector3(300.0f, 0.0f, 0.0f));
-	Player2->SetScale(100.0f);
-	Player2->SetRotation(Quaternion(-0.5f, -0.5f, -0.5f, 0.5f));
-	MeshComponent* meshPlayer2 = new MeshComponent(Player2);
-	meshPlayer2->SetMesh(gRenderer->GetMesh("Assets/Suzanne.mesh"));
+	Player2->SetPosition(Vector3(300.0f, -100.0f, 0.0f));
+	Player2->SetScale(2.0f);
+	Player2->SetRotation(Quaternion(-0.5f, 0.5f, 0.5f, 0.5f));
+	SkeletalMeshComponent* skeleMeshPlayer2 = new SkeletalMeshComponent(Player2);
+	Mesh* meshPlayer2 = gRenderer->GetMesh("Assets/CatWarrior.mesh");
+	skeleMeshPlayer2->SetMesh(meshPlayer2);
+	skeleMeshPlayer2->SetSkeleton(Player2->GetGame()->GetSkeleton("Assets/CatWarrior.skele"));
+	skeleMeshPlayer2->PlayAnimation(Player2->GetGame()->GetAnimation("Assets/CatActionIdle.anim"));
+	Player2->GetBoxComp()->SetObjectBox(meshPlayer2->GetBox());
 	//Player2->SetControllerNum(2);
 	Player2->SetRightKey(SDL_SCANCODE_L);
 	Player2->SetLeftKey(SDL_SCANCODE_J);
@@ -169,8 +173,7 @@ void Game::LoadData() {
 	dir.lDiffuseColor = Vector3(0.78f, 0.88f, 1.0f);
 	dir.lSpecColor = Vector3(0.8f, 0.8f, 0.8f);
 
-	gCameraEntity = new CameraEntity(this);
-	gCameraEntity->SetPlayers(Player1, Player2);
+	gCamera->SetPlayers(Player1, Player2);
 }
 
 void Game::UnloadData() {

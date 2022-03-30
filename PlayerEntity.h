@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "BoxComponent.h"
 #include "SDL_Scancode.h"
 
 enum PlayerState {
@@ -31,10 +32,14 @@ public:
 	void SetDownKey(SDL_Scancode key) { downKey = key; }
 
 	void SetControllerNum(int num) { controllerNum = num; }
+
+	BoxComponent* GetBoxComp() { return pBoxComp; }
+	void FixCollisions();
 private:
 	PlayerState currState = Standing;
 
 	class MoveComponent* pMoveComp;
+	class BoxComponent* pBoxComp;
 
 	SDL_Scancode rightKey;
 	SDL_Scancode leftKey;

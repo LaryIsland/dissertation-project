@@ -4,11 +4,14 @@
 #include "Renderer.h"
 #include "Game.h"
 #include "InputSystem.h"
+#include "Collision.h"
+#include "CameraEntity.h"
 #include <iostream>
 using namespace std;
 
 PlayerEntity::PlayerEntity(Game* game) : Entity(game) {
 	pMoveComp = new MoveComponent(this);
+	pBoxComp = new BoxComponent(this);
 	rightKey = SDL_SCANCODE_D;
 	leftKey = SDL_SCANCODE_A;
 	upKey = SDL_SCANCODE_W;
@@ -18,6 +21,7 @@ PlayerEntity::PlayerEntity(Game* game) : Entity(game) {
 
 void PlayerEntity::UpdateEntity(float deltaTime) {
 	Entity::UpdateEntity(deltaTime);
+	FixCollisions();
 }
 
 void PlayerEntity::EntityInput(const InputState& state) {
@@ -119,5 +123,29 @@ void PlayerEntity::SetPlayerState(PlayerState playerState) {
 			pMoveComp->SetSideSpeed(-sideSpeed);
 		}
 		break;
+	}
+}
+
+void PlayerEntity::FixCollisions() {
+	CalculateWorldTransform();
+
+	const AABB& playerBox = pBoxComp->GetWorldBox();
+	Vector3 pos = GetPosition();
+
+	PlayerEntity* enemyPlayer;
+	if (this != GetGame()->GetCamera()->GetPlayer1()) { enemyPlayer = GetGame()->GetCamera()->GetPlayer1(); }
+	else { enemyPlayer = GetGame()->GetCamera()->GetPlayer2(); }
+
+	const AABB& enemyBox = enemyPlayer->GetBoxComp()->GetWorldBox();
+	if (Intersect(playerBox, enemyBox)) {
+		float dx1 = enemyBox.aMax.x - playerBox.aMin.x;
+		float dx2 = enemyBox.aMin.x - playerBox.aMax.x;
+
+		float dx = Math::Abs(dx1) < Math::Abs(dx2) ? dx1 : dx2;
+
+		pos.x += dx;
+
+		SetPosition(pos);
+		pBoxComp->OnUpdateWorldTransform();
 	}
 }

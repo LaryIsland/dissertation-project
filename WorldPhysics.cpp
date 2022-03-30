@@ -19,3 +19,15 @@ void WorldPhysics::RemoveBox(BoxComponent* box) {
 		wBoxes.pop_back();
 	}
 }
+
+void WorldPhysics::TestPairwise(std::function<void(Entity*, Entity*)> f) {
+	for (size_t i = 0; i < wBoxes.size(); i++) {
+		for (size_t j = i + 1; j < wBoxes.size(); j++) {
+			BoxComponent* a = wBoxes[i];
+			BoxComponent* b = wBoxes[j];
+			if (Intersect(a->GetWorldBox(), b->GetWorldBox())) {
+				f(a->GetOwner(), b->GetOwner());
+			}
+		}
+	}
+}
