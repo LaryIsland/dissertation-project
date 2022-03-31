@@ -1,6 +1,7 @@
 #include "Mesh.h"
 #include "Renderer.h"
 #include "VertexArray.h"
+#include "Texture.h"
 #include <fstream>
 #include <sstream>
 #include <rapidjson/document.h>
@@ -41,6 +42,8 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer) {
 		return false;
 	}
 
+	mShaderName = doc["shader"].GetString();
+
 	VertexArray::Layout layout = VertexArray::PosNorm;
 	size_t vertSize = 8;
 
@@ -50,7 +53,25 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer) {
 		vertSize = 10;
 	}
 
+	const rapidjson::Value& textures = doc["textures"];
+	if (!textures.IsArray() || textures.Size() < 1) {
+		SDL_Log("Mesh %s has no textures", fileName.c_str());
+		return false;
+	}
+
 	mSpecPower = static_cast<float>(doc["specularPower"].GetDouble());
+
+	for (rapidjson::SizeType i = 0; i < textures.Size(); i++) {
+		std::string texName = textures[i].GetString();
+		Texture* t = renderer->GetTexture(texName);
+		if (t == nullptr) {
+			t = renderer->GetTexture(texName);
+			if (t == nullptr) {
+				t = renderer->GetTexture("Assets/Default.png");
+			}
+		}
+		mTextures.emplace_back(t);
+	}
 
 	const rapidjson::Value& vertsJson = doc["vertices"];
 	if (!vertsJson.IsArray() || vertsJson.Size() < 1) {
@@ -132,4 +153,13 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer) {
 void Mesh::Unload() {
 	delete mVertexArray;
 	mVertexArray = nullptr;
+}
+
+Texture* Mesh::GetTexture(size_t index) {
+	if (index < mTextures.size()) {
+		return mTextures[index];
+	}
+	else {
+		return nullptr;
+	}
 }

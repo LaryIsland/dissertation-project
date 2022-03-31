@@ -7,6 +7,7 @@
 #include "VertexArray.h"
 #include "Animation.h"
 #include "Skeleton.h"
+#include "Texture.h"
 
 SkeletalMeshComponent::SkeletalMeshComponent(Entity* owner):
 	MeshComponent(owner, true),
@@ -18,6 +19,8 @@ void SkeletalMeshComponent::Draw(Shader* shader) {
 		shader->SetMatrixUniform("uWorldTransform", cOwner->GetWorldTransform());
 		shader->SetMatrixUniforms("uMatrixPalette", &mPalette.mEntry[0], MAX_SKELETON_BONES);
 		shader->SetFloatUniform("uSpecPower", mMesh->GetSpecPower());
+		Texture* t = mMesh->GetTexture(mTextureIndex);
+		if (t){ t->SetActive(); }
 		VertexArray* va = mMesh->GetVertexArray();
 		va->SetActive();
 		glDrawElements(GL_TRIANGLES, va->GetNumIndices(), GL_UNSIGNED_INT, nullptr);

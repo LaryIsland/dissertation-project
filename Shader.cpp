@@ -1,4 +1,5 @@
 #include "Shader.h"
+#include "Texture.h"
 #include <SDL.h>
 #include <fstream>
 #include <sstream>

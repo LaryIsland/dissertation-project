@@ -26,7 +26,12 @@ VertexArray::VertexArray(const void* verts, unsigned int numVerts, Layout layout
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexSize, 0);
 
 		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertexSize, reinterpret_cast<void*>(sizeof(float) * 3));
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertexSize,
+			reinterpret_cast<void*>(sizeof(float) * 3));
+
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, vertexSize,
+			reinterpret_cast<void*>(sizeof(float) * 6));
 
 	}
 	else if (layout == PosNormSkin) {
@@ -44,6 +49,10 @@ VertexArray::VertexArray(const void* verts, unsigned int numVerts, Layout layout
 		glEnableVertexAttribArray(3);
 		glVertexAttribPointer(3, 4, GL_UNSIGNED_BYTE, GL_TRUE, vertexSize,
 			reinterpret_cast<void*>(sizeof(float) * 6 + sizeof(char) * 4));
+
+		glEnableVertexAttribArray(4);
+		glVertexAttribPointer(4, 2, GL_FLOAT, GL_FALSE, vertexSize,
+			reinterpret_cast<void*>(sizeof(float) * 6 + sizeof(char) * 8));
 	}
 }
 

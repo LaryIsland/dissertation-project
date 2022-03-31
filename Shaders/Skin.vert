@@ -8,9 +8,11 @@ layout(location = 0) in vec3 inPosition;
 layout(location = 1) in vec3 inNormal;
 layout(location = 2) in uvec4 inSkinBones;
 layout(location = 3) in vec4 inSkinWeights;
+layout(location = 4) in vec2 inTexCoord;
 
 out vec3 fragNormal;
 out vec3 fragWorldPos;
+out vec2 fragTexCoord;
 
 void main() {
 	vec4 pos = vec4(inPosition, 1.0);
@@ -32,4 +34,6 @@ void main() {
 	+ (skinnedNormal * uMatrixPalette[inSkinBones.w]) * inSkinWeights.w;
 
 	fragNormal = (skinnedNormal * uWorldTransform).xyz;
+
+	fragTexCoord = inTexCoord;
 }

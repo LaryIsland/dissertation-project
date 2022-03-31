@@ -71,17 +71,17 @@ void Renderer::Shutdown() {
 }
 
 void Renderer::UnloadData() {
-	for (auto i : rMeshes) {
-		i.second->Unload();
-		delete i.second;
-	}
-	rMeshes.clear();
-
 	for (auto i : rTextures) {
 		i.second->Unload();
 		delete i.second;
 	}
 	rTextures.clear();
+
+	for (auto i : rMeshes) {
+		i.second->Unload();
+		delete i.second;
+	}
+	rMeshes.clear();
 }
 
 void Renderer::Draw() {
