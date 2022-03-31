@@ -12,11 +12,11 @@ public:
 
 	void SetActive();
 
-	int GetWidth() const { return mWidth; }
-	int GetHeight() const { return mHeight; }
+	int GetWidth() const { return tWidth; }
+	int GetHeight() const { return tHeight; }
 
 private:
-	unsigned int mTextureID;
-	int mWidth;
-	int mHeight;
+	unsigned int tTextureID;
+	int tWidth;
+	int tHeight;
 };

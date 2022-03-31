@@ -16,6 +16,7 @@ public:
 	class Renderer* GetRenderer() { return gRenderer; }
 	class WorldPhysics* GetWorldPhysics() { return gWorldPhysics; }
 	class CameraEntity* GetCamera() { return gCamera; }
+	class HUD* GetHUD() { return gHUD; }
 
 	void AddEntity(class Entity* entity);
 	void RemoveEntity(class Entity* entity);
@@ -43,6 +44,7 @@ private:
 	class Renderer* gRenderer;
 	class WorldPhysics* gWorldPhysics;
 	class CameraEntity* gCamera;
+	class HUD* gHUD;
 
 	Uint32 gTicksCount;
 	bool gIsRunning;

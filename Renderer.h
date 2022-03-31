@@ -27,6 +27,7 @@ public:
 	void RemoveMeshComp(class MeshComponent* mesh);
 
 	class Mesh* GetMesh(const std::string& fileName);
+	class Texture* GetTexture(const std::string& fileName);
 
 	void SetViewMatrix(const Matrix4& view) { rView = view; }
 
@@ -38,8 +39,10 @@ public:
 private:
 	bool LoadShaders();
 	void SetLightUniforms(class Shader* shader);
+	void CreateUIVerts();
 
 	std::unordered_map<std::string, class Mesh*> rMeshes;
+	std::unordered_map<std::string, class Texture*> rTextures;
 
 	std::vector<class MeshComponent*> rMeshComps;
 	std::vector<class SkeletalMeshComponent*> rSkeleMeshComps;
@@ -48,6 +51,8 @@ private:
 
 	class Shader* rMeshShader;
 	class Shader* rSkinShader;
+	class Shader* rUIShader;
+	class VertexArray* rUIVerts;
 
 	Matrix4 rView;
 	Matrix4 rProjection;
