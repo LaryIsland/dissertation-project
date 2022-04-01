@@ -7,8 +7,10 @@ enum PlayerState {
 	Standing,
 	WalkingRight,
 	WalkingLeft,
-	Jumping,
-	Crouching
+	Punching,
+	HitStun,
+	Victory,
+	Defeat
 };
 
 class PlayerEntity : public Entity {
@@ -23,35 +25,49 @@ public:
 
 	SDL_Scancode GetRightKey() { return rightKey; }
 	SDL_Scancode GetLeftKey() { return leftKey; }
-	SDL_Scancode GetUpKey() { return upKey; }
-	SDL_Scancode GetDownKey() { return downKey; }
+	SDL_Scancode GetUpKey() { return punchKey; }
 
 	int GetHealth() { return pHealth; }
 
+	void ReduceHealth() {
+		pHealth -= 1;
+		if (pHealth == 0) {
+			SetPlayerState(Defeat);
+			pEnemy->SetPlayerState(Victory);
+		}
+	}
+
 	void SetRightKey(SDL_Scancode key) { rightKey = key; }
 	void SetLeftKey(SDL_Scancode key) { leftKey = key; }
-	void SetUpKey(SDL_Scancode key) { upKey = key; }
-	void SetDownKey(SDL_Scancode key) { downKey = key; }
+	void SetPunchKey(SDL_Scancode key) { punchKey = key; }
 
 	void SetControllerNum(int num) { controllerNum = num; }
 
 	BoxComponent* GetBoxComp() { return pBoxComp; }
 	void FixCollisions();
+
+	bool AnimationLock(float deltaTime);
+
+	void SetEnemyPlayer(PlayerEntity* enemy) { pEnemy = enemy; }
+
 private:
-	PlayerState currState = Standing;
+	PlayerState currState;
+
+	class PlayerEntity* pEnemy;
 
 	class MoveComponent* pMoveComp;
 	class BoxComponent* pBoxComp;
 	class SkeletalMeshComponent* pSkeleMeshComp;
 
-	SDL_Scancode rightKey;
-	SDL_Scancode leftKey;
-	SDL_Scancode upKey;
-	SDL_Scancode downKey;
+	SDL_Scancode rightKey = SDL_SCANCODE_D;
+	SDL_Scancode leftKey = SDL_SCANCODE_A;
+	SDL_Scancode punchKey = SDL_SCANCODE_S;
 
 	int controllerNum = 0;
 
 	int pHealth = 3;
 
 	float sideSpeed;
+
+	float lockedFrames;
 };

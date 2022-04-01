@@ -26,9 +26,9 @@ void MoveComponent::Update(float deltaTime) {
 
 	if (!Math::NearZero(mSideSpeed)) {
 		Vector3 pos = cOwner->GetPosition();
-		if (pos.x < -870) { pos.x = -870; }
-		else if (pos.x > 870) { pos.x = 870; }
-		pos += Vector3::UnitX * mSideSpeed * deltaTime;
+		if (pos.y < -870) { pos.y = -870; }
+		else if (pos.y > 870) { pos.y = 870; }
+		pos += Vector3::UnitY * mSideSpeed * deltaTime;
 		cOwner->SetPosition(pos);
 	}
 }

@@ -126,19 +126,20 @@ void Game::LoadData() {
 	PlayerEntity* Player1 = new PlayerEntity(this);
 	Player1->SetPosition(Vector3(0.0f, -400.0f, 0.0f));
 	Player1->SetScale(2.0f);
-	//Player1->SetRotation(Quaternion(0.0f, 0.0f, 1.0f, 0.0f));
+	Player1->SetRotation(Quaternion(0.0f, 0.0f, 1.0f, 0.0f));
 	//Player1->SetControllerNum(1);
 
 	// Player 2 loading
 	PlayerEntity* Player2 = new PlayerEntity(this);
 	Player2->SetPosition(Vector3(0.0f, 400.0f, 0.0f));
 	Player2->SetScale(2.0f);
-	//Player2->SetRotation(Quaternion(0.0f, 0.0f, 1.0f, 0.0f));
 	//Player2->SetControllerNum(2);
 	Player2->SetRightKey(SDL_SCANCODE_L);
 	Player2->SetLeftKey(SDL_SCANCODE_J);
-	Player2->SetUpKey(SDL_SCANCODE_I);
-	Player2->SetDownKey(SDL_SCANCODE_K);
+	Player2->SetPunchKey(SDL_SCANCODE_K);
+
+	Player1->SetEnemyPlayer(Player2);
+	Player2->SetEnemyPlayer(Player1);
 
 	Entity* rightWall = new Entity(this);
 	rightWall->SetPosition(Vector3(0.0f, 1000.0f, 200.0f));

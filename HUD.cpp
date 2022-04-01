@@ -27,6 +27,10 @@ void HUD::Update(float deltaTime) {
 			hHealthBar1 = gGame->GetRenderer()->GetTexture("Assets/Health1.png");
 			hPlayer1 = tmp;
 			break;
+		case 0:
+			hHealthBar1 = gGame->GetRenderer()->GetTexture("Assets/Health0.png");
+			hPlayer1 = tmp;
+			break;
 		}
 	}
 
@@ -39,6 +43,10 @@ void HUD::Update(float deltaTime) {
 			break;
 		case 1:
 			hHealthBar2 = gGame->GetRenderer()->GetTexture("Assets/Health1.png");
+			hPlayer2 = tmp;
+			break;
+		case 0:
+			hHealthBar2 = gGame->GetRenderer()->GetTexture("Assets/Health0.png");
 			hPlayer2 = tmp;
 			break;
 		}
