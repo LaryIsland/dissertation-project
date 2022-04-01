@@ -11,5 +11,8 @@ public:
 	void Draw(class Shader* shader) override;
 
 protected:
-	class Texture* hHealthBar;
+	class Texture* hHealthBar1;
+	class Texture* hHealthBar2;
+	int hPlayer1;
+	int hPlayer2;
 };

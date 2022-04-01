@@ -16,6 +16,7 @@
 #include "BoxComponent.h"
 #include "WorldPhysics.h"
 #include "UIScreen.h"
+#include "HUD.h"
 using namespace std;
 
 Game::Game() :
@@ -123,54 +124,49 @@ void Game::GenerateOutput() {
 void Game::LoadData() {
 	// Player 1 loading
 	PlayerEntity* Player1 = new PlayerEntity(this);
-	Player1->SetPosition(Vector3(-300.0f, -100.0f, 0.0f));
+	Player1->SetPosition(Vector3(0.0f, -400.0f, 0.0f));
 	Player1->SetScale(2.0f);
-	Player1->SetRotation(Quaternion(-0.5f, -0.5f, -0.5f, 0.5f));
-	SkeletalMeshComponent* skeleMeshPlayer1 = new SkeletalMeshComponent(Player1);
-	Mesh* meshPlayer1 = gRenderer->GetMesh("Assets/CatWarrior.mesh");
-	skeleMeshPlayer1->SetMesh(meshPlayer1);
-	skeleMeshPlayer1->SetSkeleton(Player1->GetGame()->GetSkeleton("Assets/CatWarrior.skele"));
-	skeleMeshPlayer1->PlayAnimation(Player1->GetGame()->GetAnimation("Assets/CatActionIdle.anim"));
-	Player1->GetBoxComp()->SetObjectBox(meshPlayer1->GetBox());
+	//Player1->SetRotation(Quaternion(0.0f, 0.0f, 1.0f, 0.0f));
 	//Player1->SetControllerNum(1);
 
 	// Player 2 loading
 	PlayerEntity* Player2 = new PlayerEntity(this);
-	Player2->SetPosition(Vector3(300.0f, -100.0f, 0.0f));
+	Player2->SetPosition(Vector3(0.0f, 400.0f, 0.0f));
 	Player2->SetScale(2.0f);
-	Player2->SetRotation(Quaternion(-0.5f, 0.5f, 0.5f, 0.5f));
-	SkeletalMeshComponent* skeleMeshPlayer2 = new SkeletalMeshComponent(Player2);
-	Mesh* meshPlayer2 = gRenderer->GetMesh("Assets/CatWarrior.mesh");
-	skeleMeshPlayer2->SetMesh(meshPlayer2);
-	skeleMeshPlayer2->SetSkeleton(Player2->GetGame()->GetSkeleton("Assets/CatWarrior.skele"));
-	skeleMeshPlayer2->PlayAnimation(Player2->GetGame()->GetAnimation("Assets/CatActionIdle.anim"));
-	Player2->GetBoxComp()->SetObjectBox(meshPlayer2->GetBox());
+	//Player2->SetRotation(Quaternion(0.0f, 0.0f, 1.0f, 0.0f));
 	//Player2->SetControllerNum(2);
 	Player2->SetRightKey(SDL_SCANCODE_L);
 	Player2->SetLeftKey(SDL_SCANCODE_J);
 	Player2->SetUpKey(SDL_SCANCODE_I);
 	Player2->SetDownKey(SDL_SCANCODE_K);
 
-	Entity* floor = new Entity(this);
-	floor->SetPosition(Vector3(0.0f, -100.0f, 0.0f));
-	floor->SetScale(300.0f);
-	floor->SetRotation(Quaternion(-0.707f, 0.0f, 0.0f, 0.707f));
-	MeshComponent* meshFloor = new MeshComponent(floor);
-	meshFloor->SetMesh(gRenderer->GetMesh("Assets/Plane.mesh"));
+	Entity* rightWall = new Entity(this);
+	rightWall->SetPosition(Vector3(0.0f, 1000.0f, 200.0f));
+	rightWall->SetScale(250.0f);
+	rightWall->SetRotation(Quaternion(-0.706f, -0.031f, 0.031f, 0.706f));
+	MeshComponent* meshRightWall = new MeshComponent(rightWall);
+	meshRightWall->SetMesh(gRenderer->GetMesh("Assets/Plane.mesh"));
 
 	Entity* leftWall = new Entity(this);
-	leftWall->SetPosition(Vector3(-1000.0f, 300.0f, 300.0f));
-	leftWall->SetScale(200.0f);
-	leftWall->SetRotation(Quaternion(0.0f, 0.643f, 0.0f, 0.766f));
+	leftWall->SetPosition(Vector3(0.0f, -1000.0f, 200.0f));
+	leftWall->SetScale(250.0f);
+	leftWall->SetRotation(Quaternion(-0.706f, 0.031f, -0.031f, 0.706f));
 	MeshComponent* meshLeftWall = new MeshComponent(leftWall);
 	meshLeftWall->SetMesh(gRenderer->GetMesh("Assets/Plane.mesh"));
 
-	Entity* rightWall = new Entity(this);
-	rightWall->SetPosition(Vector3(1000.0f, 300.0f, 300.0f));
-	rightWall->SetScale(200.0f);
-	rightWall->SetRotation(Quaternion(0.0f, 0.766f, 0.0f, 0.643f));
-	MeshComponent* meshRightWall = new MeshComponent(rightWall);
-	meshRightWall->SetMesh(gRenderer->GetMesh("Assets/Plane.mesh"));
+	Entity* backWall = new Entity(this);
+	backWall->SetPosition(Vector3(1100.0f, 0.0f, 300.0f));
+	backWall->SetScale(250.0f);
+	backWall->SetRotation(Quaternion(0.0f, 0.707f, 0.0f, 0.707f));
+	MeshComponent* meshBackWall = new MeshComponent(backWall);
+	meshBackWall->SetMesh(gRenderer->GetMesh("Assets/Plane.mesh"));
+
+	Entity* floor = new Entity(this);
+	floor->SetPosition(Vector3(500.0f, 0.0f, 0.0f));
+	floor->SetScale(250.0f);
+	floor->SetRotation(Quaternion(0.0f, 0.0f, 0.0f, 1.0f));
+	MeshComponent* meshFloor = new MeshComponent(floor);
+	meshFloor ->SetMesh(gRenderer->GetMesh("Assets/Plane.mesh"));
 
 	gRenderer->SetAmbientLight(Vector3(0.2f, 0.2f, 0.2f));
 	DirectionalLight& dir = gRenderer->GetDirectionalLight();
@@ -179,6 +175,8 @@ void Game::LoadData() {
 	dir.lSpecColor = Vector3(0.8f, 0.8f, 0.8f);
 
 	gCamera->SetPlayers(Player1, Player2);
+
+	gHUD = new HUD(this);
 }
 
 void Game::UnloadData() {

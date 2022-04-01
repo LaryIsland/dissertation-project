@@ -26,6 +26,8 @@ public:
 	SDL_Scancode GetUpKey() { return upKey; }
 	SDL_Scancode GetDownKey() { return downKey; }
 
+	int GetHealth() { return pHealth; }
+
 	void SetRightKey(SDL_Scancode key) { rightKey = key; }
 	void SetLeftKey(SDL_Scancode key) { leftKey = key; }
 	void SetUpKey(SDL_Scancode key) { upKey = key; }
@@ -40,6 +42,7 @@ private:
 
 	class MoveComponent* pMoveComp;
 	class BoxComponent* pBoxComp;
+	class SkeletalMeshComponent* pSkeleMeshComp;
 
 	SDL_Scancode rightKey;
 	SDL_Scancode leftKey;
@@ -47,6 +50,8 @@ private:
 	SDL_Scancode downKey;
 
 	int controllerNum = 0;
+
+	int pHealth = 3;
 
 	float sideSpeed;
 };

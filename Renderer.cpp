@@ -180,7 +180,7 @@ Texture* Renderer::GetTexture(const std::string& fileName) {
 bool Renderer::LoadShaders()
 {
 	rView = Matrix4::CreateLookAt(Vector3::Zero, Vector3::UnitX, Vector3::UnitZ);
-	rProjection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(30.0f), rScreenWidth, rScreenHeight, 25.0f, 10000.0f);
+	rProjection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(35.0f), rScreenWidth, rScreenHeight, 25.0f, 10000.0f);
 	Matrix4 viewProj = Matrix4::CreateSimpleViewProj(rScreenWidth, rScreenHeight);
 	//rProjection = Matrix4::CreateOrtho(rScreenWidth, rScreenHeight, 25.0f, 10000.0f);
 
