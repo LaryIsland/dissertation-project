@@ -33,7 +33,7 @@ bool Game::Initialize() {
 	}
 
 	gRenderer = new Renderer(this);
-	if (!gRenderer->Initialize(1920.0f, 1080.0f)) {
+	if (!gRenderer->Initialize(1600, 900)) {
 		SDL_Log("Renderer Error");
 		delete gRenderer;
 		gRenderer = nullptr;
@@ -71,8 +71,14 @@ void Game::ProcessInput() {
 	gInputSystem->Update();
 	const InputState& state = gInputSystem->GetState();
 
-	if (state.Keyboard.GetKeyState(SDL_SCANCODE_ESCAPE) == RisingEdge) {
+	if (state.Keyboard.GetKeyState(SDL_SCANCODE_ESCAPE) != NULL) {
 		gIsRunning = false;
+	}
+
+	while (SDL_PollEvent(&event)) {
+		if (event.type == SDL_QUIT) {
+			gIsRunning = false;
+		}
 	}
 
 	for (auto entity : gEntities) {
@@ -142,36 +148,36 @@ void Game::LoadData() {
 	Player2->SetEnemyPlayer(Player1);
 
 	Entity* rightWall = new Entity(this);
-	rightWall->SetPosition(Vector3(0.0f, 1000.0f, 200.0f));
+	rightWall->SetPosition(Vector3(-70.0f, 1000.0f, 1150.0f));
 	rightWall->SetScale(250.0f);
 	rightWall->SetRotation(Quaternion(-0.706f, -0.031f, 0.031f, 0.706f));
 	MeshComponent* meshRightWall = new MeshComponent(rightWall);
-	meshRightWall->SetMesh(gRenderer->GetMesh("Assets/Plane.mesh"));
+	meshRightWall->SetMesh(gRenderer->GetMesh("Assets/Wall.mesh"));
 
 	Entity* leftWall = new Entity(this);
-	leftWall->SetPosition(Vector3(0.0f, -1000.0f, 200.0f));
+	leftWall->SetPosition(Vector3(-70.0f, -1000.0f, 1150.0f));
 	leftWall->SetScale(250.0f);
 	leftWall->SetRotation(Quaternion(-0.706f, 0.031f, -0.031f, 0.706f));
 	MeshComponent* meshLeftWall = new MeshComponent(leftWall);
-	meshLeftWall->SetMesh(gRenderer->GetMesh("Assets/Plane.mesh"));
+	meshLeftWall->SetMesh(gRenderer->GetMesh("Assets/Wall.mesh"));
 
 	Entity* backWall = new Entity(this);
-	backWall->SetPosition(Vector3(1100.0f, 0.0f, 300.0f));
+	backWall->SetPosition(Vector3(1180.0f, 0.0f, 1155.0f));
 	backWall->SetScale(250.0f);
-	backWall->SetRotation(Quaternion(0.0f, 0.707f, 0.0f, 0.707f));
+	backWall->SetRotation(Quaternion(0.5f, -0.5f, -0.5f, 0.5f));
 	MeshComponent* meshBackWall = new MeshComponent(backWall);
-	meshBackWall->SetMesh(gRenderer->GetMesh("Assets/Plane.mesh"));
+	meshBackWall->SetMesh(gRenderer->GetMesh("Assets/Wall.mesh"));
 
 	Entity* floor = new Entity(this);
-	floor->SetPosition(Vector3(500.0f, 0.0f, 0.0f));
+	floor->SetPosition(Vector3(-60.0f, 0.0f, 0.0f));
 	floor->SetScale(250.0f);
 	floor->SetRotation(Quaternion(0.0f, 0.0f, 0.0f, 1.0f));
 	MeshComponent* meshFloor = new MeshComponent(floor);
-	meshFloor ->SetMesh(gRenderer->GetMesh("Assets/Plane.mesh"));
+	meshFloor ->SetMesh(gRenderer->GetMesh("Assets/Floor.mesh"));
 
-	gRenderer->SetAmbientLight(Vector3(0.2f, 0.2f, 0.2f));
+	gRenderer->SetAmbientLight(Vector3(0.25f, 0.25f, 0.25f));
 	DirectionalLight& dir = gRenderer->GetDirectionalLight();
-	dir.lDirection = Vector3(0.0f, -0.707f, -0.707f);
+	dir.lDirection = Vector3(0.500f, -0.707f, -0.500f);
 	dir.lDiffuseColor = Vector3(0.78f, 0.88f, 1.0f);
 	dir.lSpecColor = Vector3(0.8f, 0.8f, 0.8f);
 

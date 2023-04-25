@@ -1,8 +1,8 @@
 {
 	"vertexformat":"PosNorm",
 	"shader":"Phong",
-	"textures":["Assets/Plane.png"],
-	"specularPower":1,
+	"textures":["Assets/Wall.png"],
+	"specularPower":100,
 	"vertices":[
 		[-5.000000,-5.000000,0.000000,0.000000,0.000000,1.000000,0.000000,-0.000000],
 		[5.000000,-5.000000,0.000000,0.000000,0.000000,1.000000,1.000000,-0.000000],

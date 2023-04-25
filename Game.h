@@ -50,5 +50,7 @@ private:
 	bool gIsRunning;
 	bool gUpdatingEntities;
 
+	SDL_Event event;
+
 	class CameraEntity* gCameraEntity;
 };

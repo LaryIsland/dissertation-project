@@ -33,7 +33,7 @@ bool Renderer::Initialize(float screenWidth, float screenHeight) {
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
-	rWindow = SDL_CreateWindow("Final Gambit", 100, 100, static_cast<int>(rScreenWidth), static_cast<int>(rScreenHeight), SDL_WINDOW_OPENGL);
+	rWindow = SDL_CreateWindow("Final Gambit", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, static_cast<int>(rScreenWidth), static_cast<int>(rScreenHeight), SDL_WINDOW_OPENGL);
 	if (!rWindow) {
 		SDL_Log("CreateWindow Error: %s", SDL_GetError());
 		return false;

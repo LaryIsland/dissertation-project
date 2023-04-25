@@ -54,6 +54,8 @@ void HUD::Update(float deltaTime) {
 }
 
 void HUD::Draw(Shader* shader) {
-	DrawTexture(shader, hHealthBar1, Vector2(-600.0f, 400.0f));
-	DrawTexture(shader, hHealthBar2, Vector2(600.0f, 400.0f));
+	// 339.5 = width of health bar(629) / 2 + offset(25)
+	// 99 = height of health bat(148) / 2 + offset(25)
+	DrawTexture(shader, hHealthBar1, Vector2(339.5f - (gGame->GetRenderer()->GetScreenWidth() / 2), -99.0f + (gGame->GetRenderer()->GetScreenHeight() / 2)));
+	DrawTexture(shader, hHealthBar2, Vector2(-339.5f + (gGame->GetRenderer()->GetScreenWidth() / 2), -99.0f + (gGame->GetRenderer()->GetScreenHeight() / 2)));
 }
