@@ -89,11 +89,11 @@ void InputSystem::Update() {
 
 	AxisX = SDL_GameControllerGetAxis(controllerOne, SDL_CONTROLLER_AXIS_LEFTX);
 	AxisY = -SDL_GameControllerGetAxis(controllerOne, SDL_CONTROLLER_AXIS_LEFTY);
-	state.ControllerOne.leftStick = Vector2(AxisX, AxisY);
+	state.ControllerOne.leftStick = Vector2(static_cast<float>(AxisX), static_cast<float>(AxisY));
 
 	AxisX = SDL_GameControllerGetAxis(controllerOne, SDL_CONTROLLER_AXIS_RIGHTX);
 	AxisY = -SDL_GameControllerGetAxis(controllerOne, SDL_CONTROLLER_AXIS_RIGHTY);
-	state.ControllerOne.rightStick = Vector2(AxisX, AxisY);
+	state.ControllerOne.rightStick = Vector2(static_cast<float>(AxisX), static_cast<float>(AxisY));
 
 
 	// Controller Two
@@ -109,11 +109,11 @@ void InputSystem::Update() {
 	// Sticks
 	AxisX = SDL_GameControllerGetAxis(controllerTwo, SDL_CONTROLLER_AXIS_LEFTX);
 	AxisY = -SDL_GameControllerGetAxis(controllerTwo, SDL_CONTROLLER_AXIS_LEFTY);
-	state.ControllerTwo.leftStick = Vector2(AxisX, AxisY);
+	state.ControllerTwo.leftStick = Vector2(static_cast<float>(AxisX), static_cast<float>(AxisY));
 
 	AxisX = SDL_GameControllerGetAxis(controllerTwo, SDL_CONTROLLER_AXIS_RIGHTX);
 	AxisY = -SDL_GameControllerGetAxis(controllerTwo, SDL_CONTROLLER_AXIS_RIGHTY);
-	state.ControllerTwo.rightStick = Vector2(AxisX, AxisY);
+	state.ControllerTwo.rightStick = Vector2(static_cast<float>(AxisX), static_cast<float>(AxisY));
 
 	SDL_PumpEvents();
 }

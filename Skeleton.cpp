@@ -71,14 +71,14 @@ bool Skeleton::Load(const std::string& fileName) {
 			return false;
 		}
 
-		temp.bLocalTPose.mRotation.x = rot[0].GetDouble();
-		temp.bLocalTPose.mRotation.y = rot[1].GetDouble();
-		temp.bLocalTPose.mRotation.z = rot[2].GetDouble();
-		temp.bLocalTPose.mRotation.w = rot[3].GetDouble();
+		temp.bLocalTPose.mRotation.x = rot[0].GetFloat();
+		temp.bLocalTPose.mRotation.y = rot[1].GetFloat();
+		temp.bLocalTPose.mRotation.z = rot[2].GetFloat();
+		temp.bLocalTPose.mRotation.w = rot[3].GetFloat();
 
-		temp.bLocalTPose.mTranslation.x = trans[0].GetDouble();
-		temp.bLocalTPose.mTranslation.y = trans[1].GetDouble();
-		temp.bLocalTPose.mTranslation.z = trans[2].GetDouble();
+		temp.bLocalTPose.mTranslation.x = trans[0].GetFloat();
+		temp.bLocalTPose.mTranslation.y = trans[1].GetFloat();
+		temp.bLocalTPose.mTranslation.z = trans[2].GetFloat();
 
 		bBones.emplace_back(temp);
 	}

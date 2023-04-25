@@ -89,22 +89,22 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer) {
 			return false;
 		}
 
-		Vector3 pos(vert[0].GetDouble(), vert[1].GetDouble(), vert[2].GetDouble());
+		Vector3 pos(vert[0].GetFloat(), vert[1].GetFloat(), vert[2].GetFloat());
 		mRadius = Math::Max(mRadius, pos.LengthSq());
 
-		Vector2 AABBpos(vert[0].GetDouble(), vert[1].GetDouble());
+		Vector2 AABBpos(vert[0].GetFloat(), vert[1].GetFloat());
 		mBox.UpdateMinMax(AABBpos);
 
 		Vertex tmp;
 		if (layout == VertexArray::PosNorm) {
 			for (rapidjson::SizeType i = 0; i < vert.Size(); i++) {
-				tmp.f = static_cast<float>(vert[i].GetDouble());
+				tmp.f = vert[i].GetFloat();
 				vertices.emplace_back(tmp);
 			}
 		}
 		else if (layout == VertexArray::PosNormSkin) {
 			for (rapidjson::SizeType j = 0; j < 6; j++) {
-				tmp.f = static_cast<float>(vert[j].GetDouble());
+				tmp.f = vert[j].GetFloat();
 				vertices.emplace_back(tmp);
 			}
 			
@@ -118,7 +118,7 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer) {
 
 			for (rapidjson::SizeType j = 14; j < vert.Size(); j++)
 			{
-				tmp.f = vert[j].GetDouble();
+				tmp.f = vert[j].GetFloat();
 				vertices.emplace_back(tmp);
 			}
 		}

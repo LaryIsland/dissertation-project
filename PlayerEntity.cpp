@@ -65,37 +65,25 @@ void PlayerEntity::EntityInput(const InputState& state) {
 
 	// Controller Input
 	if (controllerNum == 1) {
-		switch (state.ControllerOne.GetLeftStick().x >= 0.7 * 32768) {
-		case true:
+		if (state.ControllerOne.GetLeftStick().x >= 0.7 * 32768) {
 			SetPlayerState(WalkingRight);
-			break;
-		case false:
-			switch (state.ControllerOne.GetLeftStick().x <= -0.7 * 32768) {
-			case true:
-				SetPlayerState(WalkingLeft);
-				break;
-			case false:
-				SetPlayerState(Standing);
-				break;
-			}
-			break;
+		}
+		else if (state.ControllerOne.GetLeftStick().x <= -0.7 * 32768) {
+			SetPlayerState(WalkingLeft);
+		}
+		else {
+			SetPlayerState(Standing);
 		}
 	}
 	else if (controllerNum == 2) {
-		switch (state.ControllerTwo.GetLeftStick().x >= 0.7 * 32768) {
-		case true:
+		if (state.ControllerTwo.GetLeftStick().x >= 0.7 * 32768) {
 			SetPlayerState(WalkingRight);
-			break;
-		case false:
-			switch (state.ControllerTwo.GetLeftStick().x <= -0.7 * 32768) {
-			case true:
-				SetPlayerState(WalkingLeft);
-				break;
-			case false:
-				SetPlayerState(Standing);
-				break;
-			}
-			break;
+		}
+		else if (state.ControllerTwo.GetLeftStick().x <= -0.7 * 32768) {
+			SetPlayerState(WalkingLeft);
+		}
+		else {
+			SetPlayerState(Standing);
 		}
 	}
 }

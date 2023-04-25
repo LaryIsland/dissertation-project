@@ -1,5 +1,5 @@
 #include "Texture.h"
-#include <SOIL.h>
+#include <SOIL2.h>
 #include <glew.h>
 #include <SDL.h>
 

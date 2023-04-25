@@ -41,7 +41,7 @@ bool Animation::Load(const std::string& fileName) {
 	}
 
 	aNumFrames = frames.GetUint();
-	aDuration = length.GetDouble();
+	aDuration = length.GetFloat();
 	aNumBones = boneCount.GetUint();
 	aFrameDuration = aDuration / (aNumFrames - 1);
 
@@ -83,14 +83,14 @@ bool Animation::Load(const std::string& fileName) {
 				return false;
 			}
 
-			tmp.mRotation.x = rot[0].GetDouble();
-			tmp.mRotation.y = rot[1].GetDouble();
-			tmp.mRotation.z = rot[2].GetDouble();
-			tmp.mRotation.w = rot[3].GetDouble();
+			tmp.mRotation.x = rot[0].GetFloat();
+			tmp.mRotation.y = rot[1].GetFloat();
+			tmp.mRotation.z = rot[2].GetFloat();
+			tmp.mRotation.w = rot[3].GetFloat();
 
-			tmp.mTranslation.x = trans[0].GetDouble();
-			tmp.mTranslation.y = trans[1].GetDouble();
-			tmp.mTranslation.z = trans[2].GetDouble();
+			tmp.mTranslation.x = trans[0].GetFloat();
+			tmp.mTranslation.y = trans[1].GetFloat();
+			tmp.mTranslation.z = trans[2].GetFloat();
 
 			aTracks[boneIndex].emplace_back(tmp);
 		}
