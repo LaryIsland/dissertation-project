@@ -2,7 +2,7 @@
 	"vertexformat":"PosNormSkin",
 	"shader":"Skinned",
 	"textures":[
-		"Assets/Ninja.bmp"
+		"Assets/Ninja.png"
 	],
 	"specularPower":1.0,
 	"vertices":[

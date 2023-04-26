@@ -1,5 +1,6 @@
 #include "Texture.h"
 #include <SOIL2.h>
+#define GLEW_STATIC
 #include <glew.h>
 #include <SDL.h>
 
